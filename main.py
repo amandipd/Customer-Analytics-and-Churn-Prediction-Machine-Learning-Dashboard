@@ -1,5 +1,5 @@
 import pandas as pd
-
+from prediction_models import Prediction_Models
 
 def read_and_clean_data():
     """Read the CSV file and impute missing values in 'Satisfaction Level' with the mode."""
@@ -31,16 +31,19 @@ def read_and_clean_data():
     return df
 
 
-def split_and_train_data(df):
-    """Randomly sample 80% of the data for training and standardize selected columns."""
-    train = df.sample(frac=0.8)
+def train_data(df):
+    # Standardize selected columns in both train and test
     columns_to_standardize = [
         "Age", "Items Purchased",
         "Average Rating", "Days Since Last Purchase"
     ]
-    train = standardize_columns(train, columns_to_standardize)
-    print(train.columns.tolist())
-    # print(train)
+
+    df = standardize_columns(df, columns_to_standardize)
+    X = df.drop(columns=['Customer ID', 'Total Spend'])
+    y = df['Total Spend']
+    model = Models(X, y)
+    model.lin_reg()
+    # return model
 
 
 def standardize_columns(df, columns_to_standardize):
@@ -53,4 +56,4 @@ def standardize_columns(df, columns_to_standardize):
 
 
 df = read_and_clean_data()
-split_and_train_data(df)
+train_data(df)
