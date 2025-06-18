@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import r2_score, mean_squared_error
 import joblib
 
@@ -63,6 +64,7 @@ def linear_regression(df):
     feature_columns = X.columns
 
     '''Evaluating Model and Coefficents'''
+    print("----------------------------LIN REG RESULTS----------------------------")
     print("R^2 score:", r2_score(y_test, y_pred)
           )  # measure of how well model explains variance in target variable
     print("Mean Squared Error:", mean_squared_error(y_test, y_pred))
@@ -92,6 +94,33 @@ def predict_user_input(model, user_data_dict, feature_columns):
     return prediction
 
 
+def random_forest_regressor(df):
+    '''
+    How Random Forest Regression works:
+    - Multiple trees are trained on bootstrapped subsets of data (random samples with replacement)
+    - Each tree is a regression desicion tree -- learns how to predict continuous numeric values
+    - each tree gives its own numeric prediction
+    - final output is the average of all tree outputs
+    '''
+    X = df.drop(columns=["Total Spend"])
+    y = df['Total Spend']
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42)
+
+    # n_estimators controls the number of desicion trees in the forest
+    rf_model = RandomForestRegressor(n_estimators=50, random_state=42)
+    rf_model.fit(X_train, y_train)
+    y_pred = rf_model.predict(X_test)
+
+    mse = mean_squared_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    rmse = np.sqrt(mse)
+    print(f"Mean Squared Error: {mse:.2f}")
+    print(f"R^2 Score: {r2:.4f}")
+    print(f"RMSE: {rmse:.2f}")
+
+
 df = clean_data()
 # print(df.columns.tolist)
 ''' ['Customer ID', 'Gender', 'Age', 'City', 'Membership Type',
@@ -112,12 +141,18 @@ df = encode_and_standardize_data(df)
        'Membership Type_Silver', 'Satisfaction Level_Neutral',
        'Satisfaction Level_Satisfied', 'Satisfaction Level_Unsatisfied']
 '''
+# Lin Reg
+# model_and_features = linear_regression(df)
+# lin_reg_model = model_and_features[0]
+# feature_columns = model_and_features[1]
 
-model_and_features = linear_regression(df)
-lin_reg_model = model_and_features[0]
-feature_columns = model_and_features[1]
+# Random Forest Regressor
+random_forest_regressor(df)
 
-# Testing linear_regression model
+predict_user_input
+
+
+# Testing models
 user_input = {
     "Customer ID": 101,
     "Gender": "Female",
@@ -131,7 +166,7 @@ user_input = {
     "Satisfaction Level": "Satisfied"
 }
 
-print(predict_user_input(lin_reg_model, user_input, feature_columns))
+# print(lin_reg_predict_user_input(lin_reg_model, user_input, feature_columns))
 
 # linear_regression(df)
 # user_dict = {
