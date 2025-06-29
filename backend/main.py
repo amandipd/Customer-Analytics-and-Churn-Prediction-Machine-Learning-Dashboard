@@ -5,7 +5,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
 from xgboost import XGBRegressor
-from segmentation import Segmentation
+from backend.segmentation import Segmentation
+from backend.churn_risk import Churn_Risk
 import joblib
 
 # ---------------------- Data Cleaning ---------------------- #
@@ -213,8 +214,11 @@ if __name__ == "__main__":
     ]
 
     # Segmentation Example
-    seg = Segmentation(df)
-    test = seg.k_means_cluster(features_without_spend, 5, True)
+    # seg = Segmentation(df)
+    # test = seg.dbscan_cluster(features_without_spend, 0.5, 100, True)
+
+    # Churn Risk Test
+    churn = Churn_Risk(df)
 
     # Uncomment below to test models
     # model_and_features = linear_regression(df)
