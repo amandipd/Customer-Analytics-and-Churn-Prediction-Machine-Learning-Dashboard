@@ -17,8 +17,13 @@ class Main:
 
     def __init__(self):
         self.churn_df = self.clean_data()
+        self.churn_feature_columns = [col for col in self.churn_df.columns if col not in [
+            'Customer ID', 'churn_risk']]
         # self.days_since_purchase = self.df['Days Since Last Purchase']
         self.df = self.encode_and_standardize_data(self.churn_df)
+        # Create encoded data for churn risk (leaves 'Days Since Last Purchase' unchanged)
+        self.churn_encoded_df = self.encode_and_standardize_for_churn(
+            self.churn_df)
 
     def clean_data(self):
         """Read the CSV file, impute missing values in 'Satisfaction Level', and convert booleans to numeric."""
@@ -56,6 +61,28 @@ class Main:
             df[col] = (df[col] - mean) / std
         return df
 
+    def encode_and_standardize_for_churn(self, df):
+        """One-hot encode categorical columns and standardize numerical columns,
+        but leave 'Days Since Last Purchase' unchanged for churn risk calculation"""
+
+        # One hot encode categorical columns
+        df = pd.get_dummies(
+            df, columns=['Gender', 'City', 'Membership Type', 'Satisfaction Level'])
+
+        # Standardize numerical columns EXCEPT 'Days Since Last Purchase'
+        columns_to_standardize = [
+            "Age", "Items Purchased", "Average Rating"
+        ]
+        for col in columns_to_standardize:
+            mean = df[col].mean()
+            std = df[col].std()
+            df[col] = (df[col] - mean) / std
+
+        # Note: 'Days Since Last Purchase' is left unchanged
+        # This allows the churn_risk calculation to work with original values
+
+        return df
+
     # ---------------------- Utility Methods ---------------------- #
 
     def get_features_with_spend(self):
@@ -89,23 +116,86 @@ class Main:
         ]
 
     def get_sample_user_input(self):
-        """Get example user input for testing models"""
+        """Get example user input for testing models with encoded features"""
         return {
             "Customer ID": 101,
-            "Gender": "Female",
             "Age": 29,
-            "City": "New York",
-            "Membership Type": "Gold",
+            "Total Spend": 1250.50,
             "Items Purchased": 14,
             "Average Rating": 4.6,
-            "Discount Applied": "TRUE",
+            "Discount Applied": 1,
             "Days Since Last Purchase": 25,
-            "Satisfaction Level": "Satisfied"
+            "Gender_Female": 1,
+            "Gender_Male": 0,
+            "City_Atlanta": 0,
+            "City_Austin": 0,
+            "City_Boston": 0,
+            "City_Chicago": 0,
+            "City_Dallas": 0,
+            "City_Denver": 0,
+            "City_Houston": 0,
+            "City_Las Vegas": 0,
+            "City_Los Angeles": 0,
+            "City_Miami": 0,
+            "City_New York": 1,
+            "City_Orlando": 0,
+            "City_Philadelphia": 0,
+            "City_Phoenix": 0,
+            "City_Portland": 0,
+            "City_San Diego": 0,
+            "City_San Francisco": 0,
+            "City_Seattle": 0,
+            "Membership Type_Bronze": 0,
+            "Membership Type_Gold": 1,
+            "Membership Type_Silver": 0,
+            "Satisfaction Level_Neutral": 0,
+            "Satisfaction Level_Satisfied": 1,
+            "Satisfaction Level_Unsatisfied": 0
+        }
+
+    def get_churn_sample_input(self):
+        """Get example user input specifically for churn risk prediction with encoded features"""
+        return {
+            "Age": 29,
+            "Total Spend": 1250.50,
+            "Items Purchased": 14,
+            "Average Rating": 4.6,
+            "Discount Applied": 1,
+            "Days Since Last Purchase": 10,
+            "Gender_Female": 1,
+            "Gender_Male": 0,
+            "City_Atlanta": 0,
+            "City_Austin": 0,
+            "City_Boston": 0,
+            "City_Chicago": 0,
+            "City_Dallas": 0,
+            "City_Denver": 0,
+            "City_Houston": 0,
+            "City_Las Vegas": 0,
+            "City_Los Angeles": 0,
+            "City_Miami": 0,
+            "City_New York": 1,
+            "City_Orlando": 0,
+            "City_Philadelphia": 0,
+            "City_Phoenix": 0,
+            "City_Portland": 0,
+            "City_San Diego": 0,
+            "City_San Francisco": 0,
+            "City_Seattle": 0,
+            "Membership Type_Bronze": 0,
+            "Membership Type_Gold": 1,
+            "Membership Type_Silver": 0,
+            "Satisfaction Level_Neutral": 0,
+            "Satisfaction Level_Satisfied": 1,
+            "Satisfaction Level_Unsatisfied": 0
         }
 
     def get_churn_risk(self):
-        churn = Churn_Risk(self.churn_df)
-        churn.print_df()
+        # Use the encoded data for churn risk (leaves 'Days Since Last Purchase' unchanged)
+        churn = Churn_Risk(self.churn_encoded_df)
+        model, accuracy, report, feature_columns = churn.train_random_forest()
+        # print(self.churn_encoded_df.columns)
+        print(churn.predict_churn_risk(model, self.get_churn_sample_input()))
 
 
 # ---------------------- Main Execution ---------------------- #
