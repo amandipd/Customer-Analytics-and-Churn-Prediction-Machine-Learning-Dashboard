@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from models import Models
+from src.models import Models
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
@@ -25,7 +25,7 @@ class Churn_Risk:
         '''
         # Drop non-feature columns and the target column
         feature_columns = [col for col in self.df.columns if col not in [
-            'Customer ID', 'churn_risk']]
+            'Customer ID', 'churn_risk']]   
 
         X = self.df[feature_columns]
         y = self.df["churn_risk"]

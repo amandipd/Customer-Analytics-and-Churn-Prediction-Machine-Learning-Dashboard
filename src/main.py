@@ -5,9 +5,9 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
 from xgboost import XGBRegressor
-from segmentation import Segmentation
-from churn_risk import Churn_Risk
-from models import Models
+from src.segmentation import Segmentation
+from src.churn_risk import Churn_Risk
+from src.models import Models
 import joblib
 
 # ---------------------- Data Cleaning ---------------------- #
