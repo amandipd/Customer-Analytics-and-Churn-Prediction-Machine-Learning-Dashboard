@@ -1,4 +1,4 @@
-# Customer Lifetime Value (CLV) Prediction
+# Customer Segmentation & Churn ML Tool
 
 A machine learning project to predict customer lifetime value and analyze customer behavior patterns. Currently under development.
 
