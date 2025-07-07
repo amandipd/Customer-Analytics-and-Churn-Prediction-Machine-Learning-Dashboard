@@ -6,7 +6,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
 from xgboost import XGBRegressor
 from src.segmentation import Segmentation
-from src.churn_risk import Churn_Risk
 from src.models import Models
 import joblib
 
@@ -153,50 +152,6 @@ class Main:
             "Satisfaction Level_Unsatisfied": 0
         }
 
-    def get_churn_sample_input(self):
-        """Get example user input specifically for churn risk prediction with encoded features"""
-        return {
-            "Age": 29,
-            "Total Spend": 1250.50,
-            "Items Purchased": 14,
-            "Average Rating": 4.6,
-            "Discount Applied": 1,
-            "Days Since Last Purchase": 10,
-            "Gender_Female": 1,
-            "Gender_Male": 0,
-            "City_Atlanta": 0,
-            "City_Austin": 0,
-            "City_Boston": 0,
-            "City_Chicago": 0,
-            "City_Dallas": 0,
-            "City_Denver": 0,
-            "City_Houston": 0,
-            "City_Las Vegas": 0,
-            "City_Los Angeles": 0,
-            "City_Miami": 0,
-            "City_New York": 1,
-            "City_Orlando": 0,
-            "City_Philadelphia": 0,
-            "City_Phoenix": 0,
-            "City_Portland": 0,
-            "City_San Diego": 0,
-            "City_San Francisco": 0,
-            "City_Seattle": 0,
-            "Membership Type_Bronze": 0,
-            "Membership Type_Gold": 1,
-            "Membership Type_Silver": 0,
-            "Satisfaction Level_Neutral": 0,
-            "Satisfaction Level_Satisfied": 1,
-            "Satisfaction Level_Unsatisfied": 0
-        }
-
-    def get_churn_risk(self):
-        # Use the encoded data for churn risk (leaves 'Days Since Last Purchase' unchanged)
-        churn = Churn_Risk(self.churn_encoded_df)
-        model, accuracy, report, feature_columns = churn.train_random_forest()
-        # print(self.churn_encoded_df.columns)
-        print(churn.predict_churn_risk(model, self.get_churn_sample_input()))
-
 
 # ---------------------- Main Execution ---------------------- #
 
@@ -207,7 +162,7 @@ if __name__ == "__main__":
     # Get the processed dataframe
     df = main.df
 
-    main.get_churn_risk()
+    # main.get_churn_risk()
     # print("hello")
 
     # models = Models(df)
