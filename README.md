@@ -88,6 +88,32 @@ npm start
 
 ---
 
+## Quick Setup
+
+1. **Start the Backend (FastAPI/Uvicorn):**
+
+   From the root of your project, run:
+   ```bash
+   uvicorn backend.api:app --reload
+   ```
+   This will start the FastAPI server at http://127.0.0.1:8000
+
+2. **Start the Frontend (React App):**
+
+   In a new terminal, navigate to the frontend directory:
+   ```bash
+   cd frontend
+   npm install  # Only needed the first time
+   npm start
+   ```
+   This will start the React app at http://localhost:3000
+
+3. **Usage:**
+   - Open your browser and go to http://localhost:3000 to use the app.
+   - The frontend will communicate with the backend for predictions.
+
+---
+
 ## Usage
 
 - **Model Prediction:**

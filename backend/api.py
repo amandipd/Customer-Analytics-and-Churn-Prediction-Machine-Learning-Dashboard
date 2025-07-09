@@ -1,16 +1,16 @@
 from fastapi import FastAPI
-from backend.main import Main
+from backend.main import Main, preprocess_user_input
 from pydantic import BaseModel
 from fastapi import Query
 import pandas as pd
-from src.models.linear_regression import Linear_Regression
-from src.models.random_forest import Random_Forest
-from src.models.xgboost import XGBoost_Regression
+from backend.models.linear_regression import Linear_Regression
+from backend.models.random_forest import Random_Forest
+from backend.models.xgboost import XGBoost_Regression
 import requests
 from fastapi import Body
 from backend.segmentation import Segmentation
-from src.models.churn import Churn
-
+from backend.churn import Churn
+from fastapi.middleware.cors import CORSMiddleware
 
 '''
 To start FastAPI Server
@@ -23,6 +23,14 @@ http://127.0.0.1:8000/docs
 app = FastAPI()
 main_instance = Main()
 df = main_instance.get_df()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # allow requests from any website
+    allow_credentials=True,  # allows cookies and authentication headers to be sent
+    allow_methods=["*"],  # allows all http methods (GET, POST, PUT, etc)
+    allow_headers=["*"],  # allows all headers
+)
 
 # input schema
 
@@ -41,28 +49,33 @@ class ModelInput(BaseModel):
 
 @app.post("/predict/linear-regression")
 def predict_linear_regression(input: ModelInput):
-    # Convert input to DataFrame
-    input_df = pd.DataFrame([input.model_dump()])
+    user_input = input.model_dump()
     model = Linear_Regression(df)
     model.linear_regression()
+    feature_columns = list(model.feature_columns)
+    input_df = preprocess_user_input(user_input, feature_columns)
     prediction = model.model.predict(input_df)[0]
     return {"prediction": prediction}
 
 
 @app.post("/predict/random-forest")
 def predict_random_forest(input: ModelInput):
-    input_df = pd.DataFrame([input.model_dump()])
+    user_input = input.model_dump()
     model = Random_Forest(df)
     model.random_forest_regressor()
+    feature_columns = list(model.feature_columns)
+    input_df = preprocess_user_input(user_input, feature_columns)
     prediction = model.rf_model.predict(input_df)[0]
     return {"prediction": prediction}
 
 
 @app.post("/predict/xgboost")
 def predict_xgboost(input: ModelInput):
-    input_df = pd.DataFrame([input.model_dump()])
+    user_input = input.model_dump()
     model = XGBoost_Regression(df)
     model.xgboost_regression()
+    feature_columns = list(model.feature_columns)
+    input_df = preprocess_user_input(user_input, feature_columns)
     prediction = model.model.predict(input_df)[0]
     return {"prediction": prediction}
 

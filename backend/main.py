@@ -5,12 +5,12 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
 from xgboost import XGBRegressor
-from src.models.linear_regression import Linear_Regression
-from src.models.random_forest import Random_Forest
-from src.models.xgboost import XGBoost_Regression
+from backend.models.linear_regression import Linear_Regression
+from backend.models.random_forest import Random_Forest
+from backend.models.xgboost import XGBoost_Regression
 import joblib
 import os
-from src.models.churn import Churn
+from backend.churn import Churn
 
 # ---------------------- Data Cleaning ---------------------- #
 
@@ -20,7 +20,7 @@ class Main:
     def __init__(self):
         """Read the CSV file, impute missing values in 'Satisfaction Level', and convert booleans to numeric."""
         csv_path = os.path.join(os.path.dirname(
-            __file__), '..', 'e-com_customer_behavior.csv')
+            __file__), 'e-com_customer_behavior.csv')
         self.df = pd.read_csv(csv_path)
 
         # Impute missing values in 'Satisfaction Level
@@ -143,6 +143,34 @@ class Main:
 
         prediction = model.predict(user_df)[0]
         return prediction
+
+
+def preprocess_user_input(user_input: dict, feature_columns: list) -> pd.DataFrame:
+    rename_map = {
+        "Average_Rating": "Average Rating",
+        "Items_Purchased": "Items Purchased",
+        "Discount_Applied": "Discount Applied",
+        "Days_Since_Last_Purchase": "Days Since Last Purchase",
+        "Membership_Type": "Membership Type",
+        "Satisfaction_Level": "Satisfaction Level"
+    }
+
+    user_input = {rename_map.get(k, k): v for k, v in user_input.items()}
+    df = pd.DataFrame([user_input])
+
+    # One-hot encode categorical columns
+    for col in ['Gender', 'City', 'Membership Type', 'Satisfaction Level']:
+        if col in df.columns:
+            df = pd.get_dummies(df, columns=[col])
+
+    # Add missing columns (from training) as zeros
+    for col in feature_columns:
+        if col not in df.columns:
+            df[col] = 0
+
+    df = df[feature_columns]
+
+    return df
 
 
 # ---------------------- Main Execution ---------------------- #
