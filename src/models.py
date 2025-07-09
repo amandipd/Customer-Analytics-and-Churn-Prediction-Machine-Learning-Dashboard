@@ -22,7 +22,7 @@ class Models:
         numeric_cols = X.select_dtypes(
             include=['int64', 'float64']).columns.tolist()
 
-        X_train, X_test, y_train, y_test = train_test_split(
+        X_train, X_test, y_train, self.y_test = train_test_split(
             X, y, test_size=0.2, random_state=42)
         model = LinearRegression()
         model.fit(X_train, y_train)
@@ -31,9 +31,9 @@ class Models:
 
         # Evaluating Model and Coefficents
         print("----------------------------LIN REG RESULTS----------------------------")
-        print("R^2 score:", r2_score(y_test, y_pred))
-        print("Mean Squared Error:", mean_squared_error(y_test, y_pred))
-        rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+        print("R^2 score:", r2_score(self.y_test, y_pred))
+        print("Mean Squared Error:", mean_squared_error(self.y_test, y_pred))
+        rmse = np.sqrt(mean_squared_error(self.y_test, y_pred))
         print(f"RMSE: {rmse}")
         print("Intercept:", model.intercept_)
         print("Coefficients:", list(zip(X.columns, model.coef_)))

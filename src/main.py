@@ -5,9 +5,11 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
 from xgboost import XGBRegressor
-from src.segmentation import Segmentation
-from src.models import Models
+from src.models.linear_regression import Linear_Regression
+from src.models.random_forest import Random_Forest
+from src.models.xgboost import XGBoost_Regression
 import joblib
+import os
 
 # ---------------------- Data Cleaning ---------------------- #
 
@@ -15,27 +17,19 @@ import joblib
 class Main:
 
     def __init__(self):
-        self.churn_df = self.clean_data()
-        self.churn_feature_columns = [col for col in self.churn_df.columns if col not in [
-            'Customer ID', 'churn_risk']]
-        # self.days_since_purchase = self.df['Days Since Last Purchase']
-        self.df = self.encode_and_standardize_data(self.churn_df)
-        # Create encoded data for churn risk (leaves 'Days Since Last Purchase' unchanged)
-        self.churn_encoded_df = self.encode_and_standardize_for_churn(
-            self.churn_df)
-
-    def clean_data(self):
         """Read the CSV file, impute missing values in 'Satisfaction Level', and convert booleans to numeric."""
-        df = pd.read_csv('../e-com_customer_behavior.csv')
+        csv_path = os.path.join(os.path.dirname(
+            __file__), '..', 'e-com_customer_behavior.csv')
+        self.df = pd.read_csv(csv_path)
 
-        # Impute missing values in 'Satisfaction Level'
-        most_common = df["Satisfaction Level"].mode()[0]
-        df["Satisfaction Level"] = df["Satisfaction Level"].fillna(most_common)
+        # Impute missing values in 'Satisfaction Level
+        most_common = self.df["Satisfaction Level"].mode()[0]
+        self.df["Satisfaction Level"] = self.df["Satisfaction Level"].fillna(
+            most_common)
 
         # Convert boolean column 'Discount Applied' to numeric
-        df["Discount Applied"] = df["Discount Applied"].astype(int)
-
-        return df
+        self.df["Discount Applied"] = self.df["Discount Applied"].astype(int)
+        self.df = self.encode_and_standardize_data(self.df)
 
     # ---------------------- Encoding & Standardization ---------------------- #
 
@@ -60,29 +54,9 @@ class Main:
             df[col] = (df[col] - mean) / std
         return df
 
-    def encode_and_standardize_for_churn(self, df):
-        """One-hot encode categorical columns and standardize numerical columns,
-        but leave 'Days Since Last Purchase' unchanged for churn risk calculation"""
-
-        # One hot encode categorical columns
-        df = pd.get_dummies(
-            df, columns=['Gender', 'City', 'Membership Type', 'Satisfaction Level'])
-
-        # Standardize numerical columns EXCEPT 'Days Since Last Purchase'
-        columns_to_standardize = [
-            "Age", "Items Purchased", "Average Rating"
-        ]
-        for col in columns_to_standardize:
-            mean = df[col].mean()
-            std = df[col].std()
-            df[col] = (df[col] - mean) / std
-
-        # Note: 'Days Since Last Purchase' is left unchanged
-        # This allows the churn_risk calculation to work with original values
-
-        return df
-
     # ---------------------- Utility Methods ---------------------- #
+    def get_df(self):
+        return self.df
 
     def get_features_with_spend(self):
         """Get features for segmentation (excluding Customer ID)"""
@@ -152,8 +126,49 @@ class Main:
             "Satisfaction Level_Unsatisfied": 0
         }
 
+    def predict_user_input(self, model, user_data_dict, feature_columns):
+        user_df = pd.DataFrame([user_data_dict])
+
+        # Applying one-hot encoding
+        user_df = pd.get_dummies(user_df)
+
+        # Ensuring all columns are present
+        for col in feature_columns:
+            if col not in user_df.columns:
+                user_df[col] = 0
+
+        # reorder columns to match training data
+        user_df = user_df[feature_columns]
+
+        prediction = model.predict(user_df)[0]
+        return prediction
+
 
 # ---------------------- Main Execution ---------------------- #
+
+def test_all_models(df):
+    print("\n==================== TESTING ALL MODELS ====================\n")
+    # Linear Regression
+    print("1. LINEAR REGRESSION MODEL:")
+    lin_reg_test = Linear_Regression(df)
+    lin_reg_test.linear_regression()
+    lin_reg_test.evaluate_model()
+    print("\n" + "-"*60 + "\n")
+
+    # Random Forest
+    print("2. RANDOM FOREST REGRESSOR:")
+    rf_test = Random_Forest(df)
+    rf_test.random_forest_regressor()
+    rf_test.evaluate_model()
+    print("\n" + "-"*60 + "\n")
+
+    # XGBoost
+    print("3. XGBOOST REGRESSION MODEL:")
+    xgb = XGBoost_Regression(df)
+    xgb.xgboost_regression()
+    xgb.evaluate_model()
+    print("\n==================== ALL MODELS TESTED ====================\n")
+
 
 if __name__ == "__main__":
     # Initialize the main class
@@ -162,41 +177,26 @@ if __name__ == "__main__":
     # Get the processed dataframe
     df = main.df
 
-    # main.get_churn_risk()
-    # print("hello")
+    # Linear Regression Tests
+    '''
+    lin_reg_test = Linear_Regression(df)
+    lin_reg_test.linear_regression()
+    lin_reg_test.evaluate_model()
+    '''
 
-    # models = Models(df)
-    # models.test_all_models()
+    # Random Forest Tests
+    '''
+    rf_test = Random_Forest(df)
+    rf_test.random_forest_regressor()
+    rf_test.evaluate_model()
+    '''
 
-    # print("Data shape:", df.shape)
-    # print("Columns:", list(df.columns))
-    # print("\nFirst few rows:")
-    # print(df.head())
+    # XGBoost Tests
+    '''
+    xgb = XGBoost_Regression(df)
+    xgb.xgboost_regression()
+    xgb.evaluate_model()
+    '''
 
-    # Example user input for testing models
-    # user_input = main.get_sample_user_input()
-
-    # Features for segmentation
-    # features_with_spend = main.get_features_with_spend()
-    # features_without_spend = main.get_features_without_spend()
-
-    # Uncomment below to test models
-    # model_and_features = main.linear_regression(df)
-    # lin_reg_model = model_and_features[0]
-    # feature_columns = model_and_features[1]
-
-    # main.random_forest_regressor(df)
-    # main.xgboost(df)
-
-    # print(main.predict_user_input(lin_reg_model, user_input, feature_columns))
-
-    # Segmentation Example
-    # seg = Segmentation(df)
-    # test = seg.dbscan_cluster(features_without_spend, 0.5, 100, True)
-
-    # Churn Risk Test
-    # churn = Churn_Risk(df)
-    # churn.print_df()
-
-    # print("\nDays Since Last Purchase (first 10 values):")
-    # print(df['Days Since Last Purchase'].head(10))
+    # Test all models
+    # test_all_models(df)
