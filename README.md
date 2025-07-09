@@ -1,54 +1,130 @@
-# Customer Segmentation & Churn ML Tool
+# CLV Prediction Dashboard
 
-A machine learning project to predict customer lifetime value and analyze customer behavior patterns. Currently under development.
+A modern, full-stack dashboard for Customer Lifetime Value (CLV) prediction, customer segmentation, and churn risk classification. Built with a FastAPI backend and a React (Material-UI) frontend.
 
-## 🎯 Goals
-- Predict Customer Lifetime Value using demographics and purchase data
-- Segment customers into meaningful groups
-- Identify at-risk customers (churn prediction)
-- Compare multiple regression models
+---
 
-## 📊 Data
-Customer data including demographics, purchase history, membership type, and satisfaction metrics.
+## Features
 
-## 🛠️ Technical Stack
-- Python
-- pandas, numpy, scikit-learn
-- Machine Learning (Regression, Clustering, Classification)
-- Data Analysis & Visualization
+- **ML Model Prediction:**
+  - Predict customer spend using Linear Regression, Random Forest, or XGBoost.
+  - View model statistics (R², MAE, RMSE, etc.).
+- **Segmentation Graphs:**
+  - Visualize customer segments using K-Means or DBSCAN clustering.
+  - Interactive 2D/3D cluster plots and segment statistics.
+- **Churn Risk Classification:**
+  - Predict churn risk for individual customers using a Random Forest classifier.
+  - View probability and model accuracy.
 
-## 🚀 Features
-- Data cleaning and preprocessing (missing value imputation, boolean conversion, one-hot encoding, standardization)
-- Linear Regression model with performance metrics (R², MSE, RMSE)
-- Random Forest Regressor with performance metrics (R², MSE, RMSE)
-- User input prediction function
-- Modular code for easy extension
+---
 
-## 🌐 Dummy FastAPI Example API
-This project includes a simple FastAPI app, created as a learning exercise to understand API development. The goal is to later integrate this API with the machine learning model for serving predictions and interacting with the data pipeline.
+## Project Structure
 
-**Endpoints:**
-- `GET /` — Returns a welcome message.
-- `GET /items/{item_id}` — Returns the item data for the given ID from an in-memory database.
-- `PUT /items/{item_id}` — Updates or replaces the item with the given ID using JSON data in the request body.
-
-**Example usage:**
-```bash
-# Update item 1
-curl -X PUT "http://127.0.0.1:8000/items/1" -H "Content-Type: application/json" -d "{\"name\": \"Orange\", \"price\": 2.49, \"is_offer\": false}"
-
-# Get item 1
-curl http://127.0.0.1:8000/items/1
+```
+CLV-Prediction/
+  src/
+    backend/
+      api.py            # FastAPI app and endpoints
+      main.py           # Data loading, preprocessing, utilities
+      segmentation.py   # Segmentation logic
+      churn.py          # Churn logic
+      models/
+        linear_regression.py
+        random_forest.py
+        xgboost.py
+        churn.py
+        __init__.py
+      requirements.txt  # Backend dependencies
+    frontend/
+      src/
+        components/
+          Navbar.js
+          MLForm.js
+        pages/
+          ML.js
+          Segmentation.js
+          Churn.js
+        App.js
+        theme.js
+      public/
+      package.json      # Frontend dependencies
 ```
 
-You can also interact with the API using the auto-generated docs at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+---
 
-## 🧩 Planned Extensions
-- XGBoost regression model
-- Customer segmentation (clustering)
-- Churn risk classification
-- Model comparison module
-- Model explainability (SHAP/LIME)
-- Interactive dashboard (Streamlit or Dash)
-- Automated reporting (PDF/HTML)
-- REST API for predictions
+## Getting Started
+
+### 1. Backend (FastAPI)
+
+**Setup:**
+```bash
+cd src/backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+**Run the API:**
+```bash
+uvicorn api:app --reload
+```
+
+- API docs available at: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+### 2. Frontend (React)
+
+**Setup:**
+```bash
+cd src/frontend
+npm install
+```
+
+**Run the App:**
+```bash
+npm start
+```
+
+- App runs at: [http://localhost:3000](http://localhost:3000)
+
+---
+
+## Usage
+
+- **Model Prediction:**
+  - Go to the "Model Prediction" tab.
+  - Enter customer details and select a model.
+  - Click Predict to see the result and model stats.
+
+- **Segmentation Graphs:**
+  - Go to the "Segmentation Graphs" tab.
+  - Select features and clustering method.
+  - View interactive cluster plots and segment stats.
+
+- **Churn Risk Classification:**
+  - Go to the "Churn Risk Classification" tab.
+  - Enter customer info to get churn risk and probability.
+
+---
+
+## API Endpoints (Backend)
+
+- `POST /predict/linear-regression` — Predict with Linear Regression
+- `POST /predict/random-forest` — Predict with Random Forest
+- `POST /predict/xgboost` — Predict with XGBoost
+- `GET /model-stats/{model_name}` — Get model statistics
+- `POST /segmentation/kmeans` — K-Means segmentation and stats
+- `POST /segmentation/dbscan` — DBSCAN segmentation and stats
+- `POST /predict/churn` — Churn risk prediction and probability
+
+---
+
+## Customization & Theming
+
+- Uses Material-UI dark theme and Inter font for a modern dashboard look.
+- Easily extendable for new features, models, or visualizations.
+
+---
+
+## License
+
+MIT License
