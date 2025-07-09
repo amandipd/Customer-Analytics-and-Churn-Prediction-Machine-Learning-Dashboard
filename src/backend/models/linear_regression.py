@@ -1,6 +1,6 @@
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 import numpy as np
 
 
@@ -36,3 +36,12 @@ class Linear_Regression:
         print(f"RMSE: {rmse}")
         print("Intercept:", self.model.intercept_)
         print("Coefficients:", list(zip(self.feature_columns, self.model.coef_)))
+
+    def get_stats(self):
+        y_true = self.y_test  # assuming you have train/test split
+        y_pred = self.model.predict(self.X_test)
+        return {
+            "r2": r2_score(y_true, y_pred),
+            "mae": mean_absolute_error(y_true, y_pred),
+            "rmse": mean_squared_error(y_true, y_pred, squared=False)
+        }

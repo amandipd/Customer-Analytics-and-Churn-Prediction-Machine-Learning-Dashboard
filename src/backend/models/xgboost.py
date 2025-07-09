@@ -1,5 +1,5 @@
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 from xgboost import XGBRegressor
 import numpy as np
 
@@ -27,3 +27,13 @@ class XGBoost_Regression:
         print("Mean Squared Error:", mean_squared_error(self.y_test, self.y_pred))
         rmse = np.sqrt(mean_squared_error(self.y_test, self.y_pred))
         print(f"RMSE: {rmse}")
+
+    def get_stats(self):
+        r2 = r2_score(self.y_test, self.y_pred)
+        mae = mean_absolute_error(self.y_test, self.y_pred)
+        rmse = np.sqrt(mean_squared_error(self.y_test, self.y_pred))
+        return {
+            "r2": r2,
+            "mae": mae,
+            "rmse": rmse
+        }

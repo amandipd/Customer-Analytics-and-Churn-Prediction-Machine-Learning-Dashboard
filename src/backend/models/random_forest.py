@@ -36,3 +36,13 @@ class Random_Forest:
         print(f"Mean Squared Error: {mse:.2f}")
         print(f"R^2 Score: {r2:.4f}")
         print(f"RMSE: {rmse:.2f}")
+
+    def get_stats(self):
+        r2 = r2_score(self.y_test, self.y_pred)
+        mae = mean_absolute_error(self.y_test, self.y_pred)
+        rmse = np.sqrt(mean_squared_error(self.y_test, self.y_pred))
+        return {
+            "r2": r2,
+            "mae": mae,
+            "rmse": rmse
+        }

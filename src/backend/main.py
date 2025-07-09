@@ -10,6 +10,7 @@ from src.models.random_forest import Random_Forest
 from src.models.xgboost import XGBoost_Regression
 import joblib
 import os
+from src.models.churn import Churn
 
 # ---------------------- Data Cleaning ---------------------- #
 
@@ -176,6 +177,19 @@ if __name__ == "__main__":
 
     # Get the processed dataframe
     df = main.df
+
+    # Churn Tests
+    print("\n==================== CHURN TESTS ====================\n")
+    churn = Churn(df)
+    print(f"Churn model accuracy on test set: {churn.accuracy:.2%}")
+    print("First 5 rows with churn_risk column:")
+    print(churn.df[["Days Since Last Purchase", 'churn_risk']].head())
+    sample_customer = churn.df.iloc[0]
+    risk = churn.predict_churn(sample_customer)
+    print(
+        f"\nSample customer Days Since Last Purchase: {sample_customer["Days Since Last Purchase"]}")
+    print(f"Predicted churn risk (1=risk, 0=no risk): {risk}")
+    print("\n==================== END CHURN TESTS ====================\n")
 
     # Linear Regression Tests
     '''
