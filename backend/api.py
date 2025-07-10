@@ -13,8 +13,8 @@ from backend.churn import Churn
 from fastapi.middleware.cors import CORSMiddleware
 
 '''
-To start FastAPI Server
-uvicorn src.api:app --reload
+To start FastAPI Server from root of repository
+uvicorn backend.api:app --reload
 
 Open Swagger UI
 http://127.0.0.1:8000/docs
@@ -63,9 +63,9 @@ def predict_random_forest(input: ModelInput):
     user_input = input.model_dump()
     model = Random_Forest(df)
     model.random_forest_regressor()
-    feature_columns = list(model.feature_columns)
+    feature_columns = model.feature_columns
     input_df = preprocess_user_input(user_input, feature_columns)
-    prediction = model.rf_model.predict(input_df)[0]
+    prediction = model.predict(input_df)[0]
     return {"prediction": prediction}
 
 
@@ -77,7 +77,7 @@ def predict_xgboost(input: ModelInput):
     feature_columns = list(model.feature_columns)
     input_df = preprocess_user_input(user_input, feature_columns)
     prediction = model.model.predict(input_df)[0]
-    return {"prediction": prediction}
+    return {"prediction": float(prediction)}
 
 
 @app.get("/model-stats/{model_name}")
