@@ -29,10 +29,9 @@ const membershipTypes = ["Bronze", "Silver", "Gold"];
 const satisfactionLevels = ["Satisfied", "Neutral", "Unsatisfied"];
 const genders = ["Male", "Female"];
 
-const MLForm = () => {
+const MLForm = ({ setResult }) => {
   const [input, setInput] = useState(defaultInput);
   const [model, setModel] = useState('linear-regression');
-  const [result, setResult] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -51,9 +50,16 @@ const MLForm = () => {
         `http://127.0.0.1:8000/predict/${model}`,
         input
       );
-      setResult(res.data.prediction);
+      let stats = null;
+      try {
+        const statsRes = await axios.get(`http://127.0.0.1:8000/model-stats/${model}`);
+        stats = statsRes.data;
+      } catch (statsErr) {
+        stats = { error: 'Could not fetch model statistics.' };
+      }
+      setResult({ prediction: res.data.prediction, stats });
     } catch (err) {
-      setResult('Error: ' + (err.response?.data?.detail || err.message));
+      setResult({ prediction: 'Error: ' + (err.response?.data?.detail || err.message), stats: null });
     }
   };
 
@@ -171,11 +177,6 @@ const MLForm = () => {
         </TextField>
         <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>Predict</Button>
       </form>
-      {result !== null && (
-        <Box sx={{ mt: 3 }}>
-          <Typography variant="h6">Prediction: {result}</Typography>
-        </Box>
-      )}
     </Box>
   );
 };

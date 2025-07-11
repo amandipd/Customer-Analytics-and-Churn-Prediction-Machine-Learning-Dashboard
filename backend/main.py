@@ -30,6 +30,7 @@ class Main:
 
         # Convert boolean column 'Discount Applied' to numeric
         self.df["Discount Applied"] = self.df["Discount Applied"].astype(int)
+        self.standardization_params = {}  # Store means and stds for unstandardization
         self.df = self.encode_and_standardize_data(self.df)
 
     # ---------------------- Encoding & Standardization ---------------------- #
@@ -52,6 +53,7 @@ class Main:
         for col in columns_to_standardize:
             mean = df[col].mean()
             std = df[col].std()
+            self.standardization_params[col] = {"mean": mean, "std": std}
             df[col] = (df[col] - mean) / std
         return df
 

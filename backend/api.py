@@ -99,6 +99,53 @@ def get_model_stats(model_name: str):
     return stats
 
 
+@app.get("/segmentation/features")
+def get_segmentation_features():
+    """Get available features for segmentation"""
+    # Get features excluding Customer ID and Total Spend
+    features = main_instance.get_features_without_spend()
+
+    # Create feature options with labels
+    feature_options = []
+    for feature in features:
+        if feature in ['Age', 'Items Purchased', 'Average Rating', 'Discount Applied', 'Days Since Last Purchase']:
+            feature_options.append({
+                'value': feature,
+                'label': feature,
+                'type': 'numeric'
+            })
+        elif feature.startswith('Gender_'):
+            gender = feature.replace('Gender_', '')
+            feature_options.append({
+                'value': feature,
+                'label': f'Gender ({gender})',
+                'type': 'categorical'
+            })
+        elif feature.startswith('City_'):
+            city = feature.replace('City_', '')
+            feature_options.append({
+                'value': feature,
+                'label': f'City: {city}',
+                'type': 'categorical'
+            })
+        elif feature.startswith('Membership Type_'):
+            membership = feature.replace('Membership Type_', '')
+            feature_options.append({
+                'value': feature,
+                'label': f'Membership: {membership}',
+                'type': 'categorical'
+            })
+        elif feature.startswith('Satisfaction Level_'):
+            satisfaction = feature.replace('Satisfaction Level_', '')
+            feature_options.append({
+                'value': feature,
+                'label': f'Satisfaction: {satisfaction}',
+                'type': 'categorical'
+            })
+
+    return {"features": feature_options}
+
+
 class KMeansInput(BaseModel):
     features: list[str]
     n_clusters: int = 3
@@ -120,22 +167,76 @@ def kmeans_segmentation(input: KMeansInput):
         numeric_features = [
             ("avg_total_spend", "Total Spend"),
             ("avg_age", "Age"),
-            ("avg_items_purchased", "Items_Purchased"),
-            ("avg_rating", "Average_Rating"),
-            ("avg_days_since_last_purchase", "Days_Since_Last_Purchase")
+            ("avg_items_purchased", "Items Purchased"),
+            ("avg_rating", "Average Rating"),
+            ("avg_days_since_last_purchase", "Days Since Last Purchase")
         ]
         numeric_averages = {}
         for stat_name, col_name in numeric_features:
-            numeric_averages[stat_name] = cluster_df[col_name].mean()
-        pct_discount = cluster_df['Discount_Applied'].mean() * 100
+            if col_name in cluster_df.columns:
+                numeric_averages[stat_name] = cluster_df[col_name].mean()
+            else:
+                numeric_averages[stat_name] = 0
+        pct_discount = cluster_df['Discount Applied'].mean() * 100
 
-        # Categorical distributions
         gender_dist = cluster_df['Gender'].value_counts(
-            normalize=True).to_dict()
-        membership_dist = cluster_df['Membership_Type'].value_counts(
-            normalize=True).to_dict()
-        satisfaction_dist = cluster_df['Satisfaction_Level'].value_counts(
-            normalize=True).to_dict()
+            normalize=True).to_dict() if 'Gender' in cluster_df.columns else {}
+        membership_dist = cluster_df['Membership Type'].value_counts(
+            normalize=True).to_dict() if 'Membership Type' in cluster_df.columns else {}
+        satisfaction_dist = cluster_df['Satisfaction Level'].value_counts(
+            normalize=True).to_dict() if 'Satisfaction Level' in cluster_df.columns else {}
+        stats[int(cluster)] = {
+            'size': size,
+            **numeric_averages,
+            'pct_discount_applied': pct_discount,
+            'gender_distribution': gender_dist,
+            'membership_type_distribution': membership_dist,
+            'satisfaction_level_distribution': satisfaction_dist
+        }
+    assignments = df_clusters[input.features +
+                              ['Cluster']].to_dict(orient='records')
+    return {"assignments": assignments, "stats": stats}
+
+
+class DBSCANInput(BaseModel):
+    features: list[str]
+    eps: float = 0.5
+    min_samples: int = 5
+
+
+@app.post("/segmentation/dbscan")
+def dbscan_segmentation(input: DBSCANInput):
+    seg = Segmentation(df)
+    df_clusters = seg.dbscan_cluster(
+        input.features, eps=input.eps, min_samples=input.min_samples, plot=False)
+
+    clusters = df_clusters['Cluster'].unique()
+    stats = {}
+    for cluster in clusters:
+        cluster_df = df_clusters[df_clusters['Cluster'] == cluster]
+        size = len(cluster_df)
+
+        numeric_features = [
+            ("avg_total_spend", "Total Spend"),
+            ("avg_age", "Age"),
+            ("avg_items_purchased", "Items Purchased"),
+            ("avg_rating", "Average Rating"),
+            ("avg_days_since_last_purchase", "Days Since Last Purchase")
+        ]
+        numeric_averages = {}
+        for stat_name, col_name in numeric_features:
+            if col_name in cluster_df.columns:
+                numeric_averages[stat_name] = cluster_df[col_name].mean()
+            else:
+                numeric_averages[stat_name] = 0
+        pct_discount = cluster_df['Discount Applied'].mean() * 100
+
+        gender_dist = cluster_df['Gender'].value_counts(
+            normalize=True).to_dict() if 'Gender' in cluster_df.columns else {}
+        membership_dist = cluster_df['Membership Type'].value_counts(
+            normalize=True).to_dict() if 'Membership Type' in cluster_df.columns else {}
+        satisfaction_dist = cluster_df['Satisfaction Level'].value_counts(
+            normalize=True).to_dict() if 'Satisfaction Level' in cluster_df.columns else {}
         stats[int(cluster)] = {
             'size': size,
             **numeric_averages,
@@ -158,8 +259,6 @@ class ChurnInput(BaseModel):
     Days_Since_Last_Purchase: float
     Gender_Female: int = 0
     Gender_Male: int = 0
-    # Add all possible one-hot columns for City, Membership Type, Satisfaction Level as needed
-    # For simplicity, only the above are required for now
 
 
 @app.post("/predict/churn")
