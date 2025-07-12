@@ -29,7 +29,7 @@ const SegmentationResults = ({ result }) => {
     );
   }
 
-  const { stats, assignments, algorithm, features } = result;
+  const { stats, algorithm, features } = result;
   const clusterIds = Object.keys(stats).sort((a, b) => parseInt(a) - parseInt(b));
 
   return (
@@ -140,49 +140,6 @@ const SegmentationResults = ({ result }) => {
             );
           })}
         </Grid>
-
-        {/* Sample Assignments Table */}
-        <Typography variant="h6" gutterBottom sx={{ mt: 4 }}>
-          Sample Customer Assignments
-        </Typography>
-        <TableContainer component={Paper} elevation={1}>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>Customer</TableCell>
-                {features.slice(0, 5).map((feature) => (
-                  <TableCell key={feature}>{feature}</TableCell>
-                ))}
-                <TableCell>Cluster</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {assignments.slice(0, 10).map((assignment, index) => (
-                <TableRow key={index}>
-                  <TableCell>{index + 1}</TableCell>
-                  {features.slice(0, 5).map((feature) => (
-                    <TableCell key={feature}>
-                      {typeof assignment[feature] === 'number' 
-                        ? assignment[feature].toFixed(2) 
-                        : assignment[feature]}
-                    </TableCell>
-                  ))}
-                  <TableCell>
-                    <Chip 
-                      label={assignment.Cluster === -1 ? 'Noise' : `Cluster ${assignment.Cluster}`}
-                      size="small"
-                      color={assignment.Cluster === -1 ? 'error' : 'primary'}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-          Showing first 10 assignments. Total: {assignments.length} customers
-        </Typography>
       </Paper>
     </Box>
   );

@@ -10,7 +10,7 @@ const Navbar = () => (
           Model Prediction
         </Button>
         <Button color="inherit" component={Link} to="/segmentation" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
-          Segmentation Graphs
+          Customer Segmentation
         </Button>
         <Button color="inherit" component={Link} to="/churn" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
           Churn Risk Classification

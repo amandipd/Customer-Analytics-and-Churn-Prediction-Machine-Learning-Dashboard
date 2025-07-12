@@ -174,7 +174,13 @@ def kmeans_segmentation(input: KMeansInput):
         numeric_averages = {}
         for stat_name, col_name in numeric_features:
             if col_name in cluster_df.columns:
-                numeric_averages[stat_name] = cluster_df[col_name].mean()
+                value = cluster_df[col_name].mean()
+                # unstandardize columns before returning to frontend
+                if col_name in ["Age", "Items Purchased", "Average Rating", "Days Since Last Purchase"]:
+                    std = main_instance.standardization_params[col_name]["std"]
+                    mean = main_instance.standardization_params[col_name]["mean"]
+                    value = (value * std) + mean
+                numeric_averages[stat_name] = value
             else:
                 numeric_averages[stat_name] = 0
         pct_discount = cluster_df['Discount Applied'].mean() * 100
@@ -193,9 +199,8 @@ def kmeans_segmentation(input: KMeansInput):
             'membership_type_distribution': membership_dist,
             'satisfaction_level_distribution': satisfaction_dist
         }
-    assignments = df_clusters[input.features +
-                              ['Cluster']].to_dict(orient='records')
-    return {"assignments": assignments, "stats": stats}
+    # Remove assignments output, only return stats
+    return {"stats": stats}
 
 
 class DBSCANInput(BaseModel):
@@ -225,8 +230,14 @@ def dbscan_segmentation(input: DBSCANInput):
         ]
         numeric_averages = {}
         for stat_name, col_name in numeric_features:
+            # unstandardize data before sending to frontend
             if col_name in cluster_df.columns:
-                numeric_averages[stat_name] = cluster_df[col_name].mean()
+                value = cluster_df[col_name].mean()
+                if col_name in ["Age", "Items Purchased", "Average Rating", "Days Since Last Purchase"]:
+                    std = main_instance.standardization_params[col_name]["std"]
+                    mean = main_instance.standardization_params[col_name]["mean"]
+                    value = (value * std) + mean
+                numeric_averages[stat_name] = value
             else:
                 numeric_averages[stat_name] = 0
         pct_discount = cluster_df['Discount Applied'].mean() * 100
@@ -245,9 +256,8 @@ def dbscan_segmentation(input: DBSCANInput):
             'membership_type_distribution': membership_dist,
             'satisfaction_level_distribution': satisfaction_dist
         }
-    assignments = df_clusters[input.features +
-                              ['Cluster']].to_dict(orient='records')
-    return {"assignments": assignments, "stats": stats}
+    # Remove assignments output, only return stats for DBSCAN
+    return {"stats": stats}
 
 
 class ChurnInput(BaseModel):
