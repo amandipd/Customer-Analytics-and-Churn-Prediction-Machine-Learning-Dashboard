@@ -1,4 +1,4 @@
-# Customer Insights ML Tool
+# Customer Analytics & Churn Prediction Machine Learning Dashboard
 
 ## Overview
 
