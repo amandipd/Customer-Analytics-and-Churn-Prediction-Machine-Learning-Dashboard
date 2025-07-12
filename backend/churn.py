@@ -7,9 +7,9 @@ from sklearn.metrics import accuracy_score
 class Churn:
     def __init__(self, df):
         self.df = df.copy()
-        # Add churn_risk column: 1 if Days_Since_Last_Purchase > 45, else 0
+        # Add churn_risk column: 1 if Days Since Last Purchase > 45, else 0
         self.df['churn_risk'] = (
-            self.df['Days_Since_Last_Purchase'] > 45).astype(int)
+            self.df['Days Since Last Purchase'] > 45).astype(int)
 
         X = self.df.drop(
             columns=["Customer ID", "churn_risk"], errors='ignore')

@@ -19,7 +19,7 @@ const Segmentation = () => {
       <Grid container spacing={4}>
         {/* On md (desktop, 16:9) and up, show side-by-side. On xs/sm, stack vertically. */}
         <Grid item xs={12} md={5}>
-          <Paper elevation={3} sx={{ p: 4 }}>
+          <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto' }}>
             <Typography variant="h5" gutterBottom>
               Segmentation Parameters
             </Typography>
