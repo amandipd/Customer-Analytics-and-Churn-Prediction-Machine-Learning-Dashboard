@@ -8,6 +8,8 @@ This project simulates the creation of an internal tool for companies to gain ac
 - Segment customers into meaningful groups for targeted marketing
 - Identify customers who are at risk of leaving (churn risk)
 
+*Note: The data used in this project was synthetically generated and is based on the Kaggle dataset: [E-Commerce Customer Behavior Dataset](https://www.kaggle.com/datasets/uom190346a/e-commerce-customer-behavior-dataset).*
+
 By using this tool, companies can make data-driven decisions to improve customer retention, personalize marketing, and maximize revenue.
 
 ---
