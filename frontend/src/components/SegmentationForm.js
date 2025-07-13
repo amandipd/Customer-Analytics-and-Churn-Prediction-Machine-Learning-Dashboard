@@ -21,7 +21,7 @@ const algorithmOptions = [
   { value: 'dbscan', label: 'DBSCAN Clustering' }
 ];
 
-const SegmentationForm = ({ setResult }) => {
+const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
   const [algorithm, setAlgorithm] = useState('kmeans');
   const [selectedFeatures, setSelectedFeatures] = useState([]);
   const [nClusters, setNClusters] = useState(3);
@@ -71,6 +71,7 @@ const SegmentationForm = ({ setResult }) => {
       return;
     }
 
+    if (setStatus) setStatus('loading');
     try {
       const endpoint = algorithm === 'kmeans' ? '/segmentation/kmeans' : '/segmentation/dbscan';
       const payload = algorithm === 'kmeans' 
@@ -186,6 +187,13 @@ const SegmentationForm = ({ setResult }) => {
         >
           Run Segmentation
         </Button>
+        {segmentationStatus === 'success' && (
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="body2" color="text.secondary">
+              You may need to scroll down to see results.
+            </Typography>
+          </Box>
+        )}
       </form>
     </Box>
   );

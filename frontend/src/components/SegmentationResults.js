@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Box, 
   Typography, 
@@ -16,13 +16,61 @@ import {
   TableRow
 } from '@mui/material';
 
-const SegmentationResults = ({ result }) => {
-  if (!result || result.error) {
+const SegmentationResults = ({ result, status }) => {
+  // Message to always show after loading
+  const scrollMsg = (
+    <Box sx={{ mb: 2 }}>
+      <Typography variant="body2" color="text.secondary">
+        You may need to scroll down to see results.
+      </Typography>
+    </Box>
+  );
+
+  if (status === 'idle') {
     return (
       <Box sx={{ mt: 4 }}>
         <Paper elevation={3} sx={{ p: 4 }}>
           <Typography variant="h6" color="error">
-            {result?.error || 'No results to display'}
+            No results to display
+          </Typography>
+        </Paper>
+      </Box>
+    );
+  }
+
+  if (status === 'loading') {
+    return (
+      <Box sx={{ mt: 4 }}>
+        <Paper elevation={3} sx={{ p: 4 }}>
+          <Typography variant="h6" color="primary">
+            Loading...
+          </Typography>
+        </Paper>
+      </Box>
+    );
+  }
+
+  if (status === 'error' || result?.error) {
+    return (
+      <Box sx={{ mt: 4 }}>
+        <Paper elevation={3} sx={{ p: 4 }}>
+          <Typography variant="h6" color="error">
+            {result?.error || 'An error occurred.'}
+          </Typography>
+        </Paper>
+      </Box>
+    );
+  }
+
+  if (
+    status === 'success' &&
+    (!result || !result.stats || Object.keys(result.stats).length === 0)
+  ) {
+    return (
+      <Box sx={{ mt: 4 }}>
+        <Paper elevation={3} sx={{ p: 4 }}>
+          <Typography variant="h6" color="error">
+            No results to display.
           </Typography>
         </Paper>
       </Box>

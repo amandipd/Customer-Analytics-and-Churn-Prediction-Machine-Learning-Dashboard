@@ -7,5 +7,4 @@ uvicorn
 xgboost
 matplotlib
 seaborn
-flask
 requests

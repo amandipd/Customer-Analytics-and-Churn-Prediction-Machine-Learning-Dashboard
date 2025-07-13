@@ -27,7 +27,7 @@ const ML = () => {
             <Box sx={{ color: 'text.secondary' }}>
               {result !== null ? (
                 <>
-                  <Typography variant="h6">Prediction: {result.prediction}</Typography>
+                  <Typography variant="h6">Prediction: ${typeof result.prediction === "number" ? result.prediction.toFixed(2) : result.prediction}</Typography>
                   {result.stats && !result.stats.error ? (
                     <Box sx={{ mt: 2 }}>
                       <Typography variant="subtitle1">Test Statistics:</Typography>

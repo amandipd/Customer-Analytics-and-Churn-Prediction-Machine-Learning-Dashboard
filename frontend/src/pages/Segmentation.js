@@ -5,6 +5,19 @@ import SegmentationResults from '../components/SegmentationResults';
 
 const Segmentation = () => {
   const [result, setResult] = useState(null);
+  const [status, setStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
+
+  // Wrap setResult to also set status
+  const handleSetResult = (res) => {
+    if (res && res.error) {
+      setStatus('error');
+    } else if (res && res.stats && Object.keys(res.stats).length > 0) {
+      setStatus('success');
+    } else {
+      setStatus('success'); // treat empty as success for empty result message
+    }
+    setResult(res);
+  };
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
@@ -26,12 +39,12 @@ const Segmentation = () => {
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
               Select features and algorithm parameters to perform customer segmentation.
             </Typography>
-            <SegmentationForm setResult={setResult} />
+            <SegmentationForm setResult={handleSetResult} setStatus={setStatus} segmentationStatus={status} />
           </Paper>
         </Grid>
         
         <Grid item xs={12} md={7}>
-          <SegmentationResults result={result} />
+          <SegmentationResults result={result} status={status} />
         </Grid>
       </Grid>
     </Container>
