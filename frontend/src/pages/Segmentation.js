@@ -20,7 +20,7 @@ const Segmentation = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Container maxWidth={false} sx={{ mt: 4, width: '100%' }}>
       <Typography variant="h4" gutterBottom>
         Customer Segmentation
       </Typography>
@@ -29,10 +29,10 @@ const Segmentation = () => {
         Choose between K-Means (for predefined clusters) or DBSCAN (for density-based clustering).
       </Typography>
 
-      <Grid container spacing={4}>
-        {/* On md (desktop, 16:9) and up, show side-by-side. On xs/sm, stack vertically. */}
-        <Grid item xs={12} md={5}>
-          <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto' }}>
+      <Grid container spacing={4} alignItems="flex-start" sx={{ width: '100%', margin: 0, display: 'flex', alignItems: 'flex-start' }}>
+        {/* Form on the left: 3/12, Results on the right: 4/12 */}
+        <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: 'flex-start' }}>
+          <Paper elevation={3} sx={{ p: 4, minHeight: 500, width: '100%' }}>
             <Typography variant="h5" gutterBottom>
               Segmentation Parameters
             </Typography>
@@ -42,9 +42,11 @@ const Segmentation = () => {
             <SegmentationForm setResult={handleSetResult} setStatus={setStatus} segmentationStatus={status} />
           </Paper>
         </Grid>
-        
-        <Grid item xs={12} md={7}>
-          <SegmentationResults result={result} status={status} />
+        {/* Results on the right, aligned to top, with maxWidth and centered */}
+        <Grid item xs={12} sm={4} sx={{ display: 'flex', alignItems: 'flex-start' }}>
+          <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', maxWidth: 600, mx: 'auto', width: '100%' }}>
+            <SegmentationResults result={result} status={status} />
+          </Box>
         </Grid>
       </Grid>
     </Container>
