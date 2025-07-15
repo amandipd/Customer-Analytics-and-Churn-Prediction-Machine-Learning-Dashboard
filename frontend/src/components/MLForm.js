@@ -29,9 +29,8 @@ const membershipTypes = ["Bronze", "Silver", "Gold"];
 const satisfactionLevels = ["Satisfied", "Neutral", "Unsatisfied"];
 const genders = ["Male", "Female"];
 
-const MLForm = ({ setResult }) => {
+const MLForm = ({ setResult, model, setModel }) => {
   const [input, setInput] = useState(defaultInput);
-  const [model, setModel] = useState('linear-regression');
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

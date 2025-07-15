@@ -17,6 +17,7 @@ class XGBoost_Regression:
 
         X_train, X_test, y_train, self.y_test = train_test_split(
             X, y, test_size=0.2, random_state=42)
+        self.X_test = X_test
         self.model = XGBRegressor(n_estimators=100, learning_rate=0.1,
                                   max_depth=4, random_state=42)
         self.model.fit(X_train, y_train)
