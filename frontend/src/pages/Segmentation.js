@@ -29,7 +29,7 @@ const Segmentation = () => {
         Choose between K-Means (for predefined clusters) or DBSCAN (for density-based clustering).
       </Typography>
 
-      <Grid container spacing={4} alignItems="flex-start" sx={{ width: '100%', margin: 0, display: 'flex', alignItems: 'flex-start' }}>
+      <Grid container spacing={4} justifyContent="center" alignItems="flex-start">
         {/* Form on the left: 3/12, Results on the right: 4/12 */}
         <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: 'flex-start' }}>
           <Paper elevation={3} sx={{ p: 4, minHeight: 500, width: '100%' }}>

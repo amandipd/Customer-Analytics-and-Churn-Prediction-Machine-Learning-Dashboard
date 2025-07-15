@@ -11,6 +11,7 @@ from fastapi import Body
 from backend.segmentation import Segmentation
 from backend.churn import Churn
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import HTTPException
 
 '''
 To start FastAPI Server from root of repository
@@ -319,6 +320,31 @@ def predict_churn(input: ChurnInput):
         "probability": proba,
         "model_accuracy": churn_model.accuracy
     }
+
+
+class ResidualPlotRequest(BaseModel):
+    model: str
+
+
+@app.post("/residual-plot")
+def get_residual_plot(request: ResidualPlotRequest):
+    model_name = request.model.lower()
+    if model_name == "linear_regression":
+        model = Linear_Regression(df)
+        model.linear_regression()
+        img_base64 = model.plot_residuals()
+    elif model_name == "random_forest":
+        model = Random_Forest(df)
+        model.random_forest_regressor()
+        img_base64 = model.plot_residuals()
+    elif model_name == "xgboost":
+        model = XGBoost_Regression(df)
+        model.xgboost_regression()
+        img_base64 = model.plot_residuals()
+    else:
+        raise HTTPException(
+            status_code=400, detail="Invalid model name. Use 'linear_regression', 'random_forest', or 'xgboost'.")
+    return {"image_base64": img_base64}
 
 
 '''

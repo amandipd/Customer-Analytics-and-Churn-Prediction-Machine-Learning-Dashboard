@@ -2,6 +2,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 from xgboost import XGBRegressor
 import numpy as np
+import matplotlib.pyplot as plt
+import io
+import base64
 
 
 class XGBoost_Regression:
@@ -37,3 +40,23 @@ class XGBoost_Regression:
             "mae": mae,
             "rmse": rmse
         }
+
+    def plot_residuals(self):
+        y_true = self.y_test
+        y_pred = self.model.predict(self.X_test)
+        residuals = y_true - y_pred
+
+        plt.figure(figsize=(6, 4))
+        plt.scatter(y_pred, residuals, alpha=0.6)
+        plt.axhline(0, color='red', linestyle='--')
+        plt.xlabel("Predicted Values")
+        plt.ylabel("Residuals")
+        plt.title("Residual Plot (XGBoost)")
+        plt.tight_layout()
+
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        plt.close()
+        buf.seek(0)
+        img_base64 = base64.b64encode(buf.read()).decode('utf-8')
+        return img_base64

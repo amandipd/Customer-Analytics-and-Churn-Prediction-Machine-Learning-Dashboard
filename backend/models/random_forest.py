@@ -1,8 +1,11 @@
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 import numpy as np
 import pandas as pd
-from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+import matplotlib.pyplot as plt
+import io
+import base64
 
 
 class Random_Forest:
@@ -31,7 +34,6 @@ class Random_Forest:
         X_train, X_test, y_train, self.y_test = train_test_split(
             X, y, test_size=0.2, random_state=42)
 
-        # Store the model as instance variable
         self.rf_model = RandomForestRegressor(n_estimators=50, random_state=42)
         self.rf_model.fit(X_train, y_train)
         self.y_pred = self.rf_model.predict(X_test)
@@ -64,11 +66,27 @@ class Random_Forest:
         }
 
     def predict(self, input_data):
-        '''
-        Make predictions with new data
-        '''
         if self.rf_model is None:
             raise ValueError(
                 "Model must be trained first. Call random_forest_regressor().")
-
         return self.rf_model.predict(input_data)
+
+    def plot_residuals(self):
+        if self.y_test is None or self.y_pred is None:
+            raise ValueError("Model must be trained first.")
+        residuals = self.y_test - self.y_pred
+
+        plt.figure(figsize=(6, 4))
+        plt.scatter(self.y_pred, residuals, alpha=0.6)
+        plt.axhline(0, color='red', linestyle='--')
+        plt.xlabel("Predicted Values")
+        plt.ylabel("Residuals")
+        plt.title("Residual Plot (Random Forest)")
+        plt.tight_layout()
+
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        plt.close()
+        buf.seek(0)
+        img_base64 = base64.b64encode(buf.read()).decode('utf-8')
+        return img_base64

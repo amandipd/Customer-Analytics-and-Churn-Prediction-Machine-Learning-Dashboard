@@ -2,6 +2,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 import numpy as np
+import matplotlib.pyplot as plt
+import io
+import base64
 
 
 class Linear_Regression:
@@ -28,7 +31,6 @@ class Linear_Regression:
         return self.model
 
     def evaluate_model(self):
-        # Evaluating Model and Coefficents
         print("----------------------------LIN REG RESULTS----------------------------")
         print("R^2 score:", r2_score(self.y_test, self.y_pred))
         print("Mean Squared Error:", mean_squared_error(self.y_test, self.y_pred))
@@ -38,10 +40,30 @@ class Linear_Regression:
         print("Coefficients:", list(zip(self.feature_columns, self.model.coef_)))
 
     def get_stats(self):
-        y_true = self.y_test  # assuming you have train/test split
+        y_true = self.y_test
         y_pred = self.model.predict(self.X_test)
         return {
             "r2": r2_score(y_true, y_pred),
             "mae": mean_absolute_error(y_true, y_pred),
             "rmse": mean_squared_error(y_true, y_pred)
         }
+
+    def plot_residuals(self):
+        y_true = self.y_test
+        y_pred = self.model.predict(self.X_test)
+        residuals = y_true - y_pred
+
+        plt.figure(figsize=(6, 4))
+        plt.scatter(y_pred, residuals, alpha=0.6)
+        plt.axhline(0, color='red', linestyle='--')
+        plt.xlabel("Predicted Values")
+        plt.ylabel("Residuals")
+        plt.title("Residual Plot (Linear Regression)")
+        plt.tight_layout()
+
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        plt.close()
+        buf.seek(0)
+        img_base64 = base64.b64encode(buf.read()).decode('utf-8')
+        return img_base64
