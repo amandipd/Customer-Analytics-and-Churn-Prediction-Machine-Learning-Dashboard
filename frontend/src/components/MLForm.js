@@ -63,11 +63,11 @@ const MLForm = ({ setResult, model, setModel }) => {
   };
 
   return (
-    <Box sx={{ maxWidth: 500, mx: 'auto', mt: 2 }}>
+    <Box sx={{ maxWidth: 625, minHeight: 600, mx: 'auto', mt: 2, color: '#222', width: '100%' }}>
       <Typography variant="h5" gutterBottom>ML Prediction</Typography>
       <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
+        <Grid container spacing={3} sx={{ width: '100%' }}>
+          <Grid item xs={12} sm={6}>
             <TextField
               select
               label="Model"
@@ -76,6 +76,8 @@ const MLForm = ({ setResult, model, setModel }) => {
               fullWidth
               size="small"
               margin="dense"
+              InputLabelProps={{ style: { color: '#222' } }}
+              InputProps={{ style: { color: '#222' } }}
             >
               {modelOptions.map(opt => (
                 <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
@@ -92,12 +94,15 @@ const MLForm = ({ setResult, model, setModel }) => {
               fullWidth
               size="small"
               margin="dense"
+              InputLabelProps={{ style: { color: '#222' } }}
+              InputProps={{ style: { color: '#222' } }}
             >
               {genders.map(g => (
                 <MenuItem key={g} value={g}>{g}</MenuItem>
               ))}
             </TextField>
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               label="Age"
@@ -109,6 +114,8 @@ const MLForm = ({ setResult, model, setModel }) => {
               fullWidth
               size="small"
               margin="dense"
+              InputLabelProps={{ style: { color: '#222' } }}
+              InputProps={{ style: { color: '#222' } }}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -121,12 +128,15 @@ const MLForm = ({ setResult, model, setModel }) => {
               fullWidth
               size="small"
               margin="dense"
+              InputLabelProps={{ style: { color: '#222' } }}
+              InputProps={{ style: { color: '#222' } }}
             >
               {allowedCities.map(city => (
                 <MenuItem key={city} value={city}>{city}</MenuItem>
               ))}
             </TextField>
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               select
@@ -137,6 +147,8 @@ const MLForm = ({ setResult, model, setModel }) => {
               fullWidth
               size="small"
               margin="dense"
+              InputLabelProps={{ style: { color: '#222' } }}
+              InputProps={{ style: { color: '#222' } }}
             >
               {membershipTypes.map(type => (
                 <MenuItem key={type} value={type}>{type}</MenuItem>
@@ -154,8 +166,11 @@ const MLForm = ({ setResult, model, setModel }) => {
               fullWidth
               size="small"
               margin="dense"
+              InputLabelProps={{ style: { color: '#222' } }}
+              InputProps={{ style: { color: '#222' } }}
             />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               label="Average Rating"
@@ -167,6 +182,8 @@ const MLForm = ({ setResult, model, setModel }) => {
               fullWidth
               size="small"
               margin="dense"
+              InputLabelProps={{ style: { color: '#222' } }}
+              InputProps={{ style: { color: '#222' } }}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -176,6 +193,7 @@ const MLForm = ({ setResult, model, setModel }) => {
               sx={{ mt: 1, mb: 1 }}
             />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               label="Days Since Last Purchase"
@@ -187,8 +205,13 @@ const MLForm = ({ setResult, model, setModel }) => {
               fullWidth
               size="small"
               margin="dense"
+              InputLabelProps={{ style: { color: '#222' } }}
+              InputProps={{ style: { color: '#222' } }}
             />
           </Grid>
+          {/* Add an empty Grid item to balance the last row if needed */}
+          <Grid item xs={12} sm={6} />
+
           <Grid item xs={12}>
             <TextField
               select
@@ -199,6 +222,8 @@ const MLForm = ({ setResult, model, setModel }) => {
               fullWidth
               size="small"
               margin="dense"
+              InputLabelProps={{ style: { color: '#222' } }}
+              InputProps={{ style: { color: '#222' } }}
             >
               {satisfactionLevels.map(level => (
                 <MenuItem key={level} value={level}>{level}</MenuItem>
