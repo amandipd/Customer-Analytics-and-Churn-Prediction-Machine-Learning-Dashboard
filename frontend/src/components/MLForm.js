@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Button, TextField, MenuItem, Box, Typography, FormControlLabel, Checkbox } from '@mui/material';
+import { Button, TextField, MenuItem, Box, Typography, FormControlLabel, Checkbox, Grid } from '@mui/material';
 
 const modelOptions = [
   { value: 'linear-regression', label: 'Linear Regression' },
@@ -63,118 +63,152 @@ const MLForm = ({ setResult, model, setModel }) => {
   };
 
   return (
-    <Box sx={{ maxWidth: 500, mx: 'auto', mt: 4 }}>
+    <Box sx={{ maxWidth: 500, mx: 'auto', mt: 2 }}>
       <Typography variant="h5" gutterBottom>ML Prediction</Typography>
       <form onSubmit={handleSubmit}>
-        <TextField
-          select
-          label="Model"
-          value={model}
-          onChange={handleModelChange}
-          fullWidth
-          margin="normal"
-        >
-          {modelOptions.map(opt => (
-            <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          select
-          label="Gender"
-          name="Gender"
-          value={input.Gender}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        >
-          {genders.map(g => (
-            <MenuItem key={g} value={g}>{g}</MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          label="Age"
-          name="Age"
-          value={input.Age}
-          onChange={handleChange}
-          type="number"
-          inputProps={{ min: 0, max: 150 }}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          select
-          label="City"
-          name="City"
-          value={input.City}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        >
-          {allowedCities.map(city => (
-            <MenuItem key={city} value={city}>{city}</MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          select
-          label="Membership Type"
-          name="Membership_Type"
-          value={input.Membership_Type}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        >
-          {membershipTypes.map(type => (
-            <MenuItem key={type} value={type}>{type}</MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          label="Items Purchased"
-          name="Items_Purchased"
-          value={input.Items_Purchased}
-          onChange={handleChange}
-          type="number"
-          inputProps={{ min: 0 }}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Average Rating"
-          name="Average_Rating"
-          value={input.Average_Rating}
-          onChange={handleChange}
-          type="number"
-          inputProps={{ min: 0, max: 5, step: 0.1 }}
-          fullWidth
-          margin="normal"
-        />
-        <FormControlLabel
-          control={<Checkbox checked={input.Discount_Applied} onChange={handleChange} name="Discount_Applied" />}
-          label="Discount Applied"
-        />
-        <TextField
-          label="Days Since Last Purchase"
-          name="Days_Since_Last_Purchase"
-          value={input.Days_Since_Last_Purchase}
-          onChange={handleChange}
-          type="number"
-          inputProps={{ min: 0 }}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          select
-          label="Satisfaction Level"
-          name="Satisfaction_Level"
-          value={input.Satisfaction_Level}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-        >
-          {satisfactionLevels.map(level => (
-            <MenuItem key={level} value={level}>{level}</MenuItem>
-          ))}
-        </TextField>
-        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>Predict</Button>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              select
+              label="Model"
+              value={model}
+              onChange={handleModelChange}
+              fullWidth
+              size="small"
+              margin="dense"
+            >
+              {modelOptions.map(opt => (
+                <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              select
+              label="Gender"
+              name="Gender"
+              value={input.Gender}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              margin="dense"
+            >
+              {genders.map(g => (
+                <MenuItem key={g} value={g}>{g}</MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Age"
+              name="Age"
+              value={input.Age}
+              onChange={handleChange}
+              type="number"
+              inputProps={{ min: 0, max: 150 }}
+              fullWidth
+              size="small"
+              margin="dense"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              select
+              label="City"
+              name="City"
+              value={input.City}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              margin="dense"
+            >
+              {allowedCities.map(city => (
+                <MenuItem key={city} value={city}>{city}</MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              select
+              label="Membership Type"
+              name="Membership_Type"
+              value={input.Membership_Type}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              margin="dense"
+            >
+              {membershipTypes.map(type => (
+                <MenuItem key={type} value={type}>{type}</MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Items Purchased"
+              name="Items_Purchased"
+              value={input.Items_Purchased}
+              onChange={handleChange}
+              type="number"
+              inputProps={{ min: 0 }}
+              fullWidth
+              size="small"
+              margin="dense"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Average Rating"
+              name="Average_Rating"
+              value={input.Average_Rating}
+              onChange={handleChange}
+              type="number"
+              inputProps={{ min: 0, max: 5, step: 0.1 }}
+              fullWidth
+              size="small"
+              margin="dense"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControlLabel
+              control={<Checkbox checked={input.Discount_Applied} onChange={handleChange} name="Discount_Applied" />}
+              label="Discount Applied"
+              sx={{ mt: 1, mb: 1 }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Days Since Last Purchase"
+              name="Days_Since_Last_Purchase"
+              value={input.Days_Since_Last_Purchase}
+              onChange={handleChange}
+              type="number"
+              inputProps={{ min: 0 }}
+              fullWidth
+              size="small"
+              margin="dense"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              select
+              label="Satisfaction Level"
+              name="Satisfaction_Level"
+              value={input.Satisfaction_Level}
+              onChange={handleChange}
+              fullWidth
+              size="small"
+              margin="dense"
+            >
+              {satisfactionLevels.map(level => (
+                <MenuItem key={level} value={level}>{level}</MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={12}>
+            <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 1, mb: 1 }}>Predict</Button>
+          </Grid>
+        </Grid>
       </form>
     </Box>
   );

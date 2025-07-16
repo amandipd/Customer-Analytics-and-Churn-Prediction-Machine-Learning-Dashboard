@@ -34,10 +34,10 @@ const ML = () => {
   }, [result, model]);
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 2 }}>
       <Grid container spacing={4} justifyContent="center" alignItems="flex-start">
         <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500, background: '#fff', color: '#111' }}>
+          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500, background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
             <Typography variant="h5" gutterBottom>
               Model Prediction
             </Typography>
@@ -48,7 +48,7 @@ const ML = () => {
           </Paper>
         </Grid>
         <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500, background: '#fff', color: '#111' }}>
+          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500, background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
             <Typography variant="h6" gutterBottom>
               Prediction Results
             </Typography>

@@ -1,26 +1,96 @@
 import React from 'react';
-import { AppBar, Toolbar, Button, Box } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, Button, Box, Paper, IconButton } from '@mui/material';
+import { Link, useLocation } from 'react-router-dom';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
+import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
-const Navbar = () => (
-  <AppBar position="static" color="primary" elevation={2}>
-    <Toolbar sx={{ justifyContent: 'center' }}>
-      <Box sx={{ mx: 'auto', display: 'flex', gap: 4 }}>
-        <Button color="inherit" component={Link} to="/about" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
-          About This Project
-        </Button>
-        <Button color="inherit" component={Link} to="/ml" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
-          Customer Spend Prediction
-        </Button>
-        <Button color="inherit" component={Link} to="/segmentation" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
-          Customer Segmentation
-        </Button>
-        <Button color="inherit" component={Link} to="/churn" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
-          Churn Risk Classification
-        </Button>
-      </Box>
-    </Toolbar>
-  </AppBar>
-);
+const navItems = [
+  { label: 'Home', to: '/about', icon: <HomeOutlinedIcon /> },
+  { label: 'Customer Spend Prediction', to: '/ml', icon: <BarChartOutlinedIcon /> },
+  { label: 'Customer Segmentation', to: '/segmentation', icon: <GroupsOutlinedIcon /> },
+  { label: 'Churn Risk Classification', to: '/churn', icon: <WarningAmberOutlinedIcon /> },
+];
+
+const Navbar = () => {
+  const location = useLocation();
+  return (
+    <AppBar position="static" elevation={0} sx={{ background: 'transparent', boxShadow: 'none', pt: 0 }}>
+      <Toolbar sx={{ display: 'flex', alignItems: 'center', minHeight: 'unset', p: 0, position: 'relative' }}>
+        <Paper
+          elevation={0}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            background: 'transparent',
+            boxShadow: 'none',
+            borderRadius: 0,
+            px: 2,
+            py: 0.5,
+            minHeight: 56,
+            gap: 3.5,
+            mx: 'auto',
+          }}
+        >
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.to || (item.to === '/about' && location.pathname === '/');
+            return (
+              <Button
+                key={item.to}
+                component={Link}
+                to={item.to}
+                startIcon={item.icon}
+                sx={{
+                  color: isActive ? '#2c50b8' : '#222',
+                  fontWeight: 500,
+                  fontSize: '1.05rem',
+                  textTransform: 'none',
+                  borderRadius: 2,
+                  px: 2.2,
+                  py: 1.2,
+                  minWidth: 0,
+                  position: 'relative',
+                  background: 'transparent',
+                  boxShadow: 'none',
+                  '&:hover': {
+                    background: 'rgba(44,80,184,0.07)',
+                  },
+                  '&:after': isActive
+                    ? {
+                        content: '""',
+                        display: 'block',
+                        position: 'absolute',
+                        left: 12,
+                        right: 12,
+                        bottom: 4,
+                        height: '3px',
+                        borderRadius: 2,
+                        background: '#2c50b8',
+                      }
+                    : {},
+                }}
+              >
+                {item.label}
+              </Button>
+            );
+          })}
+        </Paper>
+        <Box sx={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', height: '100%' }}>
+          <IconButton
+            href="https://github.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ color: '#222', '&:hover': { color: '#2c50b8', background: 'rgba(44,80,184,0.07)' } }}
+            aria-label="GitHub Repository"
+          >
+            <GitHubIcon fontSize="medium" />
+          </IconButton>
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+};
 
 export default Navbar;

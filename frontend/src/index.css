@@ -11,6 +11,10 @@ code {
     monospace;
 }
 
+html, body, h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, label, a {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif !important;
+}
+
 .page-container {
   background: #fff;
   color: #111;

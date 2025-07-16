@@ -20,7 +20,7 @@ const Segmentation = () => {
   };
 
   return (
-    <Container maxWidth={false} sx={{ mt: 4, width: '100%' }}>
+    <Container maxWidth={false} sx={{ mt: 2, width: '100%' }}>
       <Typography variant="h4" gutterBottom>
         Customer Segmentation
       </Typography>
@@ -32,7 +32,7 @@ const Segmentation = () => {
       <Grid container spacing={4} justifyContent="center" alignItems="flex-start">
         {/* Form on the left: 3/12, Results on the right: 4/12 */}
         <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: 'flex-start' }}>
-          <Paper elevation={3} sx={{ p: 4, minHeight: 500, width: '100%', background: '#fff', color: '#111' }}>
+          <Paper elevation={3} sx={{ p: 4, minHeight: 500, width: '100%', background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
             <Typography variant="h5" gutterBottom>
               Segmentation Parameters
             </Typography>

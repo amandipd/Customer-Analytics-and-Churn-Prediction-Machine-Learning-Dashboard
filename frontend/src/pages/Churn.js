@@ -67,40 +67,64 @@ const ChurnForm = ({ setResult }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextField label="Age" name="Age" value={input.Age} onChange={handleChange} type="number" fullWidth margin="normal" required inputProps={{ min: 0, max: 150 }} />
-      <TextField label="Total Spend" name="Total_Spend" value={input.Total_Spend} onChange={handleChange} type="number" fullWidth margin="normal" required inputProps={{ min: 0 }} />
-      <TextField label="Items Purchased" name="Items_Purchased" value={input.Items_Purchased} onChange={handleChange} type="number" fullWidth margin="normal" required inputProps={{ min: 0 }} />
-      <TextField label="Average Rating" name="Average_Rating" value={input.Average_Rating} onChange={handleChange} type="number" fullWidth margin="normal" required inputProps={{ min: 0, max: 5, step: 0.1 }} />
-      <FormControlLabel
-        control={<Checkbox checked={!!input.Discount_Applied} onChange={handleChange} name="Discount_Applied" />}
-        label="Discount Applied"
-        sx={{ display: 'block', mt: 1, mb: 1 }}
-      />
-      <TextField label="Days Since Last Purchase" name="Days_Since_Last_Purchase" value={input.Days_Since_Last_Purchase} onChange={handleChange} type="number" fullWidth margin="normal" required inputProps={{ min: 0 }} />
-      <TextField select label="Gender" name="Gender" value={input.Gender} onChange={handleChange} fullWidth margin="normal" required>
-        {genders.map((gender) => (
-          <MenuItem key={gender} value={gender}>{gender}</MenuItem>
-        ))}
-      </TextField>
-      <TextField select label="City" name="City" value={input.City} onChange={handleChange} fullWidth margin="normal" required>
-        {cities.map((city) => (
-          <MenuItem key={city} value={city}>{city}</MenuItem>
-        ))}
-      </TextField>
-      <TextField select label="Membership Type" name="Membership_Type" value={input.Membership_Type} onChange={handleChange} fullWidth margin="normal" required>
-        {membershipTypes.map((type) => (
-          <MenuItem key={type} value={type}>{type}</MenuItem>
-        ))}
-      </TextField>
-      <TextField select label="Satisfaction Level" name="Satisfaction_Level" value={input.Satisfaction_Level} onChange={handleChange} fullWidth margin="normal" required>
-        {satisfactionLevels.map((level) => (
-          <MenuItem key={level} value={level}>{level}</MenuItem>
-        ))}
-      </TextField>
-      <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }} disabled={loading}>
-        {loading ? 'Predicting...' : 'Predict Churn Risk'}
-      </Button>
-      {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <TextField label="Age" name="Age" value={input.Age} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0, max: 150 }} size="small" />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField label="Total Spend" name="Total_Spend" value={input.Total_Spend} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0 }} size="small" />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField label="Items Purchased" name="Items_Purchased" value={input.Items_Purchased} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0 }} size="small" />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField label="Average Rating" name="Average_Rating" value={input.Average_Rating} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0, max: 5, step: 0.1 }} size="small" />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControlLabel
+            control={<Checkbox checked={!!input.Discount_Applied} onChange={handleChange} name="Discount_Applied" />}
+            label="Discount Applied"
+            sx={{ display: 'block', mt: 1, mb: 1 }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField label="Days Since Last Purchase" name="Days_Since_Last_Purchase" value={input.Days_Since_Last_Purchase} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0 }} size="small" />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField select label="Gender" name="Gender" value={input.Gender} onChange={handleChange} fullWidth margin="dense" required size="small">
+            {genders.map((gender) => (
+              <MenuItem key={gender} value={gender}>{gender}</MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField select label="City" name="City" value={input.City} onChange={handleChange} fullWidth margin="dense" required size="small">
+            {cities.map((city) => (
+              <MenuItem key={city} value={city}>{city}</MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField select label="Membership Type" name="Membership_Type" value={input.Membership_Type} onChange={handleChange} fullWidth margin="dense" required size="small">
+            {membershipTypes.map((type) => (
+              <MenuItem key={type} value={type}>{type}</MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField select label="Satisfaction Level" name="Satisfaction_Level" value={input.Satisfaction_Level} onChange={handleChange} fullWidth margin="dense" required size="small">
+            {satisfactionLevels.map((level) => (
+              <MenuItem key={level} value={level}>{level}</MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+        <Grid item xs={12}>
+          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 1, mb: 1 }} disabled={loading}>
+            {loading ? 'Predicting...' : 'Predict Churn Risk'}
+          </Button>
+          {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+        </Grid>
+      </Grid>
     </form>
   );
 };
@@ -131,7 +155,7 @@ const Churn = () => {
   const [result, setResult] = useState(null);
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 2 }}>
       <Typography variant="h4" gutterBottom>
         Churn Risk Classification
       </Typography>
@@ -140,7 +164,7 @@ const Churn = () => {
       </Typography>
       <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
-          <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto', background: '#fff', color: '#111' }}>
+          <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto', background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
             <ChurnForm setResult={setResult} />
           </Paper>
         </Grid>
