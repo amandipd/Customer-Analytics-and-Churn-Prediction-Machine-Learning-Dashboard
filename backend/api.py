@@ -347,6 +347,24 @@ def get_residual_plot(request: ResidualPlotRequest):
     return {"image_base64": img_base64}
 
 
+class BoxplotRequest(BaseModel):
+    features: list[str]
+    n_clusters: int
+    feature_to_plot: str
+
+
+@app.post("/segmentation/boxplot")
+def get_segmentation_boxplot(request: BoxplotRequest):
+    seg = Segmentation(df)
+    img_base64 = seg.plot_feature_boxplot_by_cluster(
+        request.features,
+        n_clusters=request.n_clusters,
+        feature_to_plot=request.feature_to_plot,
+        standardization_params=main_instance.standardization_params
+    )
+    return {"image_base64": img_base64}
+
+
 '''
 # testing api-endpoints
 url = "http://127.0.0.1:8000/predict/linear-regression"

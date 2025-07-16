@@ -29,6 +29,11 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
   const [minSamples, setMinSamples] = useState(5);
   const [availableFeatures, setAvailableFeatures] = useState([]);
   const [loading, setLoading] = useState(true);
+  // Boxplot feature selection and image state
+  const [boxplotFeature, setBoxplotFeature] = useState('');
+  const [boxplotImg, setBoxplotImg] = useState(null);
+  const [boxplotLoading, setBoxplotLoading] = useState(false);
+  const [boxplotError, setBoxplotError] = useState(null);
 
   // Load available features from API
   useEffect(() => {
@@ -53,6 +58,27 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
 
     loadFeatures();
   }, []);
+
+  // Remove boxplot button and instead fetch boxplot after segmentation
+  useEffect(() => {
+    // Only fetch boxplot if segmentation was successful, KMeans is selected, and a boxplot feature is chosen
+    if (segmentationStatus === 'success' && algorithm === 'kmeans' && selectedFeatures.length > 0 && boxplotFeature) {
+      setBoxplotLoading(true);
+      setBoxplotError(null);
+      setBoxplotImg(null);
+      axios.post('http://127.0.0.1:8000/segmentation/boxplot', {
+        features: selectedFeatures,
+        n_clusters: nClusters,
+        feature_to_plot: boxplotFeature
+      })
+        .then(res => setBoxplotImg(res.data.image_base64))
+        .catch(() => setBoxplotError('Could not fetch boxplot.'))
+        .finally(() => setBoxplotLoading(false));
+    } else {
+      setBoxplotImg(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [segmentationStatus, algorithm, selectedFeatures, nClusters, boxplotFeature]);
 
   const handleFeatureChange = (event) => {
     const value = event.target.value;
@@ -177,6 +203,28 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
           </>
         )}
 
+        {/* Boxplot Feature Selector (only for KMeans and if features selected) */}
+        {algorithm === 'kmeans' && selectedFeatures.length > 0 && (
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Feature for Boxplot</InputLabel>
+            <Select
+              value={boxplotFeature}
+              onChange={e => setBoxplotFeature(e.target.value)}
+              label="Feature for Boxplot"
+            >
+              {selectedFeatures
+                .filter(value => {
+                  const feature = availableFeatures.find(f => f.value === value);
+                  return feature && feature.type === 'numeric';
+                })
+                .map((value) => {
+                  const feature = availableFeatures.find(f => f.value === value);
+                  return <MenuItem key={value} value={value}>{feature?.label || value}</MenuItem>;
+                })}
+            </Select>
+          </FormControl>
+        )}
+
         <Button 
           type="submit" 
           variant="contained" 
@@ -195,6 +243,23 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
           </Box>
         )}
       </form>
+
+      {/* Boxplot Button and Image */}
+      {algorithm === 'kmeans' && selectedFeatures.length > 0 && boxplotFeature && (
+        <Box sx={{ mt: 3 }}>
+          {boxplotLoading && <Typography>Loading boxplot...</Typography>}
+          {boxplotError && <Typography color="error" sx={{ mt: 2 }}>{boxplotError}</Typography>}
+          {boxplotImg && !boxplotLoading && (
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
+              <img
+                src={`data:image/png;base64,${boxplotImg}`}
+                alt="Boxplot"
+                style={{ maxWidth: '100%', borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
+              />
+            </Box>
+          )}
+        </Box>
+      )}
     </Box>
   );
 };

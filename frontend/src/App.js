@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import MLPage from './pages/ML';
 import SegmentationPage from './pages/Segmentation';
 import ChurnPage from './pages/Churn';
+import About from './pages/About';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<MLPage />} />
           <Route path="/segmentation" element={<SegmentationPage />} />
           <Route path="/churn" element={<ChurnPage />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </Router>
     </ThemeProvider>

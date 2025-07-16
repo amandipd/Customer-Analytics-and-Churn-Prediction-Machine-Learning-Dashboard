@@ -5,6 +5,8 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import seaborn as sns  # data viz library
 from mpl_toolkits.mplot3d import Axes3D  # for 3D plotting
+import io
+import base64
 
 
 class Segmentation:
@@ -160,3 +162,32 @@ class Segmentation:
                 plt.show()
 
         return df_with_clusters
+
+    def plot_feature_boxplot_by_cluster(self, features, n_clusters, feature_to_plot, standardization_params=None):
+        """
+        Generate a boxplot of a selected feature grouped by cluster.
+        """
+        # Run KMeans clustering
+        kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+        cluster_labels = kmeans.fit_predict(self.df[features])
+        df_with_clusters = self.df.copy()
+        df_with_clusters['Cluster'] = cluster_labels + 1  # 1-based for user
+        # Unstandardize if needed
+        if standardization_params is not None and feature_to_plot in standardization_params:
+            std = standardization_params[feature_to_plot]["std"]
+            mean = standardization_params[feature_to_plot]["mean"]
+            df_with_clusters[feature_to_plot] = df_with_clusters[feature_to_plot] * std + mean
+        # Create boxplot
+        buf = io.BytesIO()
+        plt.figure(figsize=(8, 5))
+        sns.boxplot(x='Cluster', y=feature_to_plot,
+                    data=df_with_clusters, palette='Set2')
+        plt.title(f"{feature_to_plot} Distribution by Cluster")
+        plt.xlabel("Cluster")
+        plt.ylabel(feature_to_plot)
+        plt.tight_layout()
+        plt.savefig(buf, format='png')
+        plt.close()
+        buf.seek(0)
+        img_base64 = base64.b64encode(buf.read()).decode('utf-8')
+        return img_base64

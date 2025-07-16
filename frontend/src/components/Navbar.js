@@ -6,8 +6,11 @@ const Navbar = () => (
   <AppBar position="static" color="primary" elevation={2}>
     <Toolbar sx={{ justifyContent: 'center' }}>
       <Box sx={{ mx: 'auto', display: 'flex', gap: 4 }}>
+        <Button color="inherit" component={Link} to="/about" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
+          About This Project
+        </Button>
         <Button color="inherit" component={Link} to="/" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
-          Model Prediction
+          Customer Spend Prediction
         </Button>
         <Button color="inherit" component={Link} to="/segmentation" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
           Customer Segmentation
