@@ -140,7 +140,7 @@ const Churn = () => {
       </Typography>
       <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
-          <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto' }}>
+          <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto', background: '#fff', color: '#111' }}>
             <ChurnForm setResult={setResult} />
           </Paper>
         </Grid>

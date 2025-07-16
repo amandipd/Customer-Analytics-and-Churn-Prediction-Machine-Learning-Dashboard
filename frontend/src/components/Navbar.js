@@ -9,7 +9,7 @@ const Navbar = () => (
         <Button color="inherit" component={Link} to="/about" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
           About This Project
         </Button>
-        <Button color="inherit" component={Link} to="/" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
+        <Button color="inherit" component={Link} to="/ml" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
           Customer Spend Prediction
         </Button>
         <Button color="inherit" component={Link} to="/segmentation" sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>

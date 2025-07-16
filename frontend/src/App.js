@@ -15,9 +15,10 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<MLPage />} />
+          <Route path="/" element={<About />} />
           <Route path="/segmentation" element={<SegmentationPage />} />
           <Route path="/churn" element={<ChurnPage />} />
+          <Route path="/ml" element={<MLPage />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </Router>

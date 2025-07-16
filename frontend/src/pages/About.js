@@ -3,7 +3,7 @@ import { Box, Typography, Paper, Divider } from '@mui/material';
 
 const About = () => (
   <Box sx={{ maxWidth: 800, mx: 'auto', mt: 6, mb: 6 }}>
-    <Paper elevation={3} sx={{ p: 4 }}>
+    <Paper elevation={3} sx={{ p: 4, background: '#fff', color: '#111' }}>
       <Typography variant="h4" gutterBottom>Customer Analytics Dashboard</Typography>
       <Typography variant="h5" gutterBottom>About This Project</Typography>
       <Typography variant="body1" sx={{ mb: 3 }}>

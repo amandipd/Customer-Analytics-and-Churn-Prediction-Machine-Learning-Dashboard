@@ -37,7 +37,7 @@ const ML = () => {
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Grid container spacing={4} justifyContent="center" alignItems="flex-start">
         <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500 }}>
+          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500, background: '#fff', color: '#111' }}>
             <Typography variant="h5" gutterBottom>
               Model Prediction
             </Typography>
@@ -48,7 +48,7 @@ const ML = () => {
           </Paper>
         </Grid>
         <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500 }}>
+          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500, background: '#fff', color: '#111' }}>
             <Typography variant="h6" gutterBottom>
               Prediction Results
             </Typography>
@@ -59,7 +59,7 @@ const ML = () => {
                   {result.stats && !result.stats.error ? (
                     <Box sx={{ mt: 2 }}>
                       <Typography variant="subtitle1">Test Statistics:</Typography>
-                      <Typography variant="body2">R²: {result.stats.r2?.toFixed(4)}</Typography>
+                      <Typography variant="body2">R 8: {result.stats.r2?.toFixed(4)}</Typography>
                       <Typography variant="body2">MAE: {result.stats.mae?.toFixed(4)}</Typography>
                       <Typography variant="body2">RMSE: {result.stats.rmse?.toFixed(4)}</Typography>
                     </Box>
