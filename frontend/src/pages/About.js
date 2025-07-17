@@ -30,7 +30,7 @@ const About = () => (
       </Typography>
       <Divider sx={{ my: 3 }} />
       <Typography variant="h5" gutterBottom>How It Works</Typography>
-      <Typography variant="body2" color="text.secondary">
+      <Typography variant="body2">
         The dashboard uses machine learning models behind the scenes, but no data science expertise is required. Business users can simply fill in the forms and let the dashboard handle the complex analysis automatically.
       </Typography>
     </Paper>

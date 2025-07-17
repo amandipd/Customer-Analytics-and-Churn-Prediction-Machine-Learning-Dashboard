@@ -37,11 +37,11 @@ const ML = () => {
     <Container maxWidth="lg" sx={{ mt: 2 }}>
       <Grid container spacing={4} justifyContent="center" alignItems="flex-start">
         <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500, background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
+          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 600, background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
             <Typography variant="h5" gutterBottom>
               Model Prediction
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
               Enter customer details and select a model to predict their total spend.
             </Typography>
             <MLForm setResult={setResult} model={model} setModel={setModel} />
@@ -52,14 +52,14 @@ const ML = () => {
             <Typography variant="h6" gutterBottom>
               Prediction Results
             </Typography>
-            <Box sx={{ color: 'text.secondary' }}>
+            <Box sx={{ color: '#555' }}>
               {result !== null ? (
                 <>
                   <Typography variant="h6">Spend Prediction: ${typeof result.prediction === "number" ? result.prediction.toFixed(2) : result.prediction}</Typography>
                   {result.stats && !result.stats.error ? (
                     <Box sx={{ mt: 2 }}>
                       <Typography variant="subtitle1">Test Statistics:</Typography>
-                      <Typography variant="body2">R 8: {result.stats.r2?.toFixed(4)}</Typography>
+                      <Typography variant="body2">R<sup>2</sup>: {result.stats.r2?.toFixed(4)}</Typography>
                       <Typography variant="body2">MAE: {result.stats.mae?.toFixed(4)}</Typography>
                       <Typography variant="body2">RMSE: {result.stats.rmse?.toFixed(4)}</Typography>
                     </Box>
@@ -79,7 +79,7 @@ const ML = () => {
                   )}
                 </>
               ) : (
-                'Results will appear here after you submit the form.'
+                <Typography sx={{ color: '#555' }}>Results will appear here after you submit the form.</Typography>
               )}
             </Box>
           </Paper>
