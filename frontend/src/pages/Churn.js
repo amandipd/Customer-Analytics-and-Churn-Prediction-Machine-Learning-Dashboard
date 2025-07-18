@@ -69,16 +69,64 @@ const ChurnForm = ({ setResult, setLoading }) => {
     <form onSubmit={handleSubmit}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} sx={{ minWidth: 220 }}>
-          <TextField label="Age" name="Age" value={input.Age} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0, max: 150 }} size="small" InputLabelProps={{ style: { color: '#222' } }} InputProps={{ style: { color: '#222' } }} />
+          <TextField label="Age" name="Age" value={input.Age} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0, max: 150 }} size="small"
+  InputLabelProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  InputProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  sx={{
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': { borderColor: '#e0e0e0' },
+      '& input': { fontSize: '0.95rem' },
+      '&:hover fieldset': { borderColor: '#e0e0e0' },
+      '&.Mui-focused fieldset': { borderColor: '#e0e0e0' }
+    },
+    '& .MuiInputLabel-root': { fontSize: '0.95rem' }
+  }}
+/>
         </Grid>
         <Grid item xs={12} sm={6} sx={{ minWidth: 220 }}>
-          <TextField label="Total Spend" name="Total_Spend" value={input.Total_Spend} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0 }} size="small" InputLabelProps={{ style: { color: '#222' } }} InputProps={{ style: { color: '#222' } }} />
+          <TextField label="Total Spend" name="Total_Spend" value={input.Total_Spend} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0 }} size="small"
+  InputLabelProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  InputProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  sx={{
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': { borderColor: '#e0e0e0' },
+      '& input': { fontSize: '0.95rem' },
+      '&:hover fieldset': { borderColor: '#e0e0e0' },
+      '&.Mui-focused fieldset': { borderColor: '#e0e0e0' }
+    },
+    '& .MuiInputLabel-root': { fontSize: '0.95rem' }
+  }}
+/>
         </Grid>
         <Grid item xs={12} sm={6} sx={{ minWidth: 220 }}>
-          <TextField label="Items Purchased" name="Items_Purchased" value={input.Items_Purchased} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0 }} size="small" InputLabelProps={{ style: { color: '#222' } }} InputProps={{ style: { color: '#222' } }} />
+          <TextField label="Items Purchased" name="Items_Purchased" value={input.Items_Purchased} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0 }} size="small"
+  InputLabelProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  InputProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  sx={{
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': { borderColor: '#e0e0e0' },
+      '& input': { fontSize: '0.95rem' },
+      '&:hover fieldset': { borderColor: '#e0e0e0' },
+      '&.Mui-focused fieldset': { borderColor: '#e0e0e0' }
+    },
+    '& .MuiInputLabel-root': { fontSize: '0.95rem' }
+  }}
+/>
         </Grid>
         <Grid item xs={12} sm={6} sx={{ minWidth: 220 }}>
-          <TextField label="Average Rating" name="Average_Rating" value={input.Average_Rating} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0, max: 5, step: 0.1 }} size="small" InputLabelProps={{ style: { color: '#222' } }} InputProps={{ style: { color: '#222' } }} />
+          <TextField label="Average Rating" name="Average_Rating" value={input.Average_Rating} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0, max: 5, step: 0.1 }} size="small"
+  InputLabelProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  InputProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  sx={{
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': { borderColor: '#e0e0e0' },
+      '& input': { fontSize: '0.95rem' },
+      '&:hover fieldset': { borderColor: '#e0e0e0' },
+      '&.Mui-focused fieldset': { borderColor: '#e0e0e0' }
+    },
+    '& .MuiInputLabel-root': { fontSize: '0.95rem' }
+  }}
+/>
         </Grid>
         <Grid item xs={12} sm={6} sx={{ minWidth: 220 }}>
           <FormControlLabel
@@ -88,35 +136,95 @@ const ChurnForm = ({ setResult, setLoading }) => {
           />
         </Grid>
         <Grid item xs={12} sm={6} sx={{ minWidth: 220 }}>
-          <TextField label="Days Since Last Purchase" name="Days_Since_Last_Purchase" value={input.Days_Since_Last_Purchase} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0 }} size="small" InputLabelProps={{ style: { color: '#222' } }} InputProps={{ style: { color: '#222' } }} />
+          <TextField label="Days Since Last Purchase" name="Days_Since_Last_Purchase" value={input.Days_Since_Last_Purchase} onChange={handleChange} type="number" fullWidth margin="dense" required inputProps={{ min: 0 }} size="small"
+  InputLabelProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  InputProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  sx={{
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': { borderColor: '#e0e0e0' },
+      '& input': { fontSize: '0.95rem' },
+      '&:hover fieldset': { borderColor: '#e0e0e0' },
+      '&.Mui-focused fieldset': { borderColor: '#e0e0e0' }
+    },
+    '& .MuiInputLabel-root': { fontSize: '0.95rem' }
+  }}
+/>
         </Grid>
         <Grid item xs={12} sm={6} sx={{ minWidth: 220 }}>
-          <TextField select label="Gender" name="Gender" value={input.Gender} onChange={handleChange} fullWidth margin="dense" required size="small" InputLabelProps={{ style: { color: '#222' } }} InputProps={{ style: { color: '#222' } }}>
-            {genders.map((gender) => (
-              <MenuItem key={gender} value={gender}>{gender}</MenuItem>
-            ))}
-          </TextField>
+          <TextField select label="Gender" name="Gender" value={input.Gender} onChange={handleChange} fullWidth margin="dense" required size="small"
+  InputLabelProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  InputProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  sx={{
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': { borderColor: '#e0e0e0' },
+      '& input': { fontSize: '0.95rem' },
+      '&:hover fieldset': { borderColor: '#e0e0e0' },
+      '&.Mui-focused fieldset': { borderColor: '#e0e0e0' }
+    },
+    '& .MuiInputLabel-root': { fontSize: '0.95rem' }
+  }}
+>
+  {genders.map((gender) => (
+    <MenuItem key={gender} value={gender}>{gender}</MenuItem>
+  ))}
+</TextField>
         </Grid>
         <Grid item xs={12} sm={6} sx={{ minWidth: 220 }}>
-          <TextField select label="City" name="City" value={input.City} onChange={handleChange} fullWidth margin="dense" required size="small" InputLabelProps={{ style: { color: '#222' } }} InputProps={{ style: { color: '#222' } }}>
-            {cities.map((city) => (
-              <MenuItem key={city} value={city}>{city}</MenuItem>
-            ))}
-          </TextField>
+          <TextField select label="City" name="City" value={input.City} onChange={handleChange} fullWidth margin="dense" required size="small"
+  InputLabelProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  InputProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  sx={{
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': { borderColor: '#e0e0e0' },
+      '& input': { fontSize: '0.95rem' },
+      '&:hover fieldset': { borderColor: '#e0e0e0' },
+      '&.Mui-focused fieldset': { borderColor: '#e0e0e0' }
+    },
+    '& .MuiInputLabel-root': { fontSize: '0.95rem' }
+  }}
+>
+  {cities.map((city) => (
+    <MenuItem key={city} value={city}>{city}</MenuItem>
+  ))}
+</TextField>
         </Grid>
         <Grid item xs={12} sm={6} sx={{ minWidth: 220 }}>
-          <TextField select label="Membership Type" name="Membership_Type" value={input.Membership_Type} onChange={handleChange} fullWidth margin="dense" required size="small" InputLabelProps={{ style: { color: '#222' } }} InputProps={{ style: { color: '#222' } }}>
-            {membershipTypes.map((type) => (
-              <MenuItem key={type} value={type}>{type}</MenuItem>
-            ))}
-          </TextField>
+          <TextField select label="Membership Type" name="Membership_Type" value={input.Membership_Type} onChange={handleChange} fullWidth margin="dense" required size="small"
+  InputLabelProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  InputProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  sx={{
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': { borderColor: '#e0e0e0' },
+      '& input': { fontSize: '0.95rem' },
+      '&:hover fieldset': { borderColor: '#e0e0e0' },
+      '&.Mui-focused fieldset': { borderColor: '#e0e0e0' }
+    },
+    '& .MuiInputLabel-root': { fontSize: '0.95rem' }
+  }}
+>
+  {membershipTypes.map((type) => (
+    <MenuItem key={type} value={type}>{type}</MenuItem>
+  ))}
+</TextField>
         </Grid>
         <Grid item xs={12} sm={6} sx={{ minWidth: 220 }}>
-          <TextField select label="Satisfaction Level" name="Satisfaction_Level" value={input.Satisfaction_Level} onChange={handleChange} fullWidth margin="dense" required size="small" InputLabelProps={{ style: { color: '#222' } }} InputProps={{ style: { color: '#222' } }}>
-            {satisfactionLevels.map((level) => (
-              <MenuItem key={level} value={level}>{level}</MenuItem>
-            ))}
-          </TextField>
+          <TextField select label="Satisfaction Level" name="Satisfaction_Level" value={input.Satisfaction_Level} onChange={handleChange} fullWidth margin="dense" required size="small"
+  InputLabelProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  InputProps={{ style: { color: '#222', fontSize: '0.95rem' } }}
+  sx={{
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': { borderColor: '#e0e0e0' },
+      '& input': { fontSize: '0.95rem' },
+      '&:hover fieldset': { borderColor: '#e0e0e0' },
+      '&.Mui-focused fieldset': { borderColor: '#e0e0e0' }
+    },
+    '& .MuiInputLabel-root': { fontSize: '0.95rem' }
+  }}
+>
+  {satisfactionLevels.map((level) => (
+    <MenuItem key={level} value={level}>{level}</MenuItem>
+  ))}
+</TextField>
         </Grid>
         <Grid item xs={12}>
           <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 1, mb: 1 }}>

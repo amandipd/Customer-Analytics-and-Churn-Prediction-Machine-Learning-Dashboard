@@ -253,27 +253,15 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
               </Box>
             )}
             sx={{
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "#e0e0e0",
-                },
-                "& input": {
-                  fontSize: "0.95rem",
-                  color: "#222",
-                },
-                "&:hover fieldset": {
-                  borderColor: "#e0e0e0",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "#e0e0e0",
-                },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { borderColor: '#e0e0e0' },
+                '& input': { fontSize: '0.95rem', color: '#222' },
+                '&:hover fieldset': { borderColor: '#e0e0e0' },
+                '&.Mui-focused fieldset': { borderColor: '#e0e0e0' }
               },
-              "& .MuiInputLabel-root": {
-                fontSize: "0.95rem",
-                color: "#222",
-              },
+              '& .MuiInputLabel-root': { fontSize: '0.95rem', color: '#222' }
             }}
-            InputLabelProps={{ style: { color: "#222", opacity: 1 } }}
+            InputLabelProps={{ style: { color: '#222', opacity: 1 } }}
           >
             {availableFeatures.map((feature) => (
               <MenuItem key={feature.value} value={feature.value}>
