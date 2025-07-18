@@ -20,33 +20,28 @@ const Segmentation = () => {
   };
 
   return (
-    <Container maxWidth={false} sx={{ mt: 2, width: '100%' }}>
-      <Typography variant="h4" gutterBottom>
-        Customer Segmentation
-      </Typography>
-      <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-        Use clustering algorithms to segment customers based on their behavior and characteristics. 
-        Choose between K-Means (for predefined clusters) or DBSCAN (for density-based clustering).
-      </Typography>
-
+    <Container maxWidth="lg" sx={{ mt: 2 }}>
       <Grid container spacing={4} justifyContent="center" alignItems="flex-start">
-        {/* Form on the left: 3/12, Results on the right: 4/12 */}
-        <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: 'flex-start' }}>
-          <Paper elevation={3} sx={{ p: 4, minHeight: 500, width: '100%', background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
+        <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 600, background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
             <Typography variant="h5" gutterBottom>
-              Segmentation Parameters
+              Customer Segmentation
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              Select features and algorithm parameters to perform customer segmentation.
+            <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
+              Use clustering algorithms to segment customers based on their behavior and characteristics. Choose between K-Means (for predefined clusters) or DBSCAN (for density-based clustering).
             </Typography>
             <SegmentationForm setResult={handleSetResult} setStatus={setStatus} segmentationStatus={status} />
           </Paper>
         </Grid>
-        {/* Results on the right, aligned to top, with maxWidth and centered */}
-        <Grid item xs={12} sm={4} sx={{ display: 'flex', alignItems: 'flex-start' }}>
-          <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', maxWidth: 600, mx: 'auto', width: '100%' }}>
-            <SegmentationResults result={result} status={status} />
-          </Box>
+        <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500, background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
+            <Typography variant="h6" gutterBottom>
+              Segmentation Results
+            </Typography>
+            <Box sx={{ color: '#555' }}>
+              <SegmentationResults result={result} status={status} />
+            </Box>
+          </Paper>
         </Grid>
       </Grid>
     </Container>

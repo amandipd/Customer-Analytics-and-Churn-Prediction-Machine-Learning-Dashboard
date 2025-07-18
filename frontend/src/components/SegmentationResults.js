@@ -28,12 +28,10 @@ const SegmentationResults = ({ result, status }) => {
 
   if (status === 'idle') {
     return (
-      <Box sx={{ mt: 4 }}>
-        <Paper elevation={3} sx={{ p: 4 }}>
-          <Typography variant="h6" color="error">
-            No results to display
-          </Typography>
-        </Paper>
+      <Box sx={{ mt: 2 }}>
+        <Typography sx={{ color: '#555' }}>
+          Results will appear here after you submit the form.
+        </Typography>
       </Box>
     );
   }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Container, Grid, Paper, Typography, Box, TextField, Button, MenuItem, Alert, FormControlLabel, Checkbox } from '@mui/material';
+import { Container, Grid, Paper, Typography, Box } from '@mui/material';
+import { TextField, Button, MenuItem, Alert, FormControlLabel, Checkbox, CircularProgress } from '@mui/material';
 import axios from 'axios';
 
 const genders = ['Male', 'Female'];
@@ -24,10 +25,10 @@ const defaultInput = {
   Satisfaction_Level: ''
 };
 
-const ChurnForm = ({ setResult }) => {
+
+const ChurnForm = ({ setResult, setLoading }) => {
   const [input, setInput] = useState(defaultInput);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -43,7 +44,6 @@ const ChurnForm = ({ setResult }) => {
     setResult(null);
     setLoading(true);
     try {
-      // Prepare payload with categorical fields (backend will handle one-hot encoding)
       const payload = {
         Age: Number(input.Age),
         Total_Spend: Number(input.Total_Spend),
@@ -119,8 +119,8 @@ const ChurnForm = ({ setResult }) => {
           </TextField>
         </Grid>
         <Grid item xs={12}>
-          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 1, mb: 1 }} disabled={loading}>
-            {loading ? 'Predicting...' : 'Predict Churn Risk'}
+          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 1, mb: 1 }}>
+            Predict Churn Risk
           </Button>
           {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
         </Grid>
@@ -129,47 +129,58 @@ const ChurnForm = ({ setResult }) => {
   );
 };
 
-const ChurnResults = ({ result }) => {
-  if (!result) return null;
+const ChurnResults = ({ result, loading }) => {
+  if (loading) {
+    return <Box sx={{ mt: 3, textAlign: 'center' }}><CircularProgress /></Box>;
+  }
   return (
     <Box>
-      <Typography variant="h5" gutterBottom>
-        Churn Risk Results
+      <Typography variant="h6" gutterBottom>
+        Prediction Results
       </Typography>
-      <Paper elevation={2} sx={{ p: 3, mt: 2 }}>
-        <Typography variant="body1" sx={{ mb: 2 }}>
-          <strong>Churn Risk:</strong> {result.churn_risk === 1 ? 'At Risk' : 'Not at Risk'}
-        </Typography>
-        <Typography variant="body2">
-          <strong>Risk of Losing Customer:</strong> {(result.probability * 100).toFixed(2)}%
-        </Typography>
-        <Typography variant="body2">
-          <strong>Model Accuracy:</strong> {(result.model_accuracy * 100).toFixed(2)}%
-        </Typography>
-      </Paper>
+      {!result ? (
+  <Typography sx={{ color: '#555', mt: 2 }}>
+    Results will appear here after you submit the form.
+  </Typography>
+) : (
+  <Paper elevation={2} sx={{ p: 3, mt: 2 }}>
+    <Typography variant="body1" sx={{ mb: 2 }}>
+      <strong>Churn Risk:</strong> {result.churn_risk === 1 ? 'At Risk' : 'Not at Risk'}
+    </Typography>
+    <Typography variant="body2">
+      <strong>Risk of Losing Customer:</strong> {(result.probability * 100).toFixed(2)}%
+    </Typography>
+    <Typography variant="body2">
+      <strong>Model Accuracy:</strong> {(result.model_accuracy * 100).toFixed(2)}%
+    </Typography>
+  </Paper>
+) }
     </Box>
   );
 };
 
 const Churn = () => {
   const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   return (
     <Container maxWidth="lg" sx={{ mt: 2 }}>
-      <Typography variant="h4" gutterBottom>
-        Churn Risk Classification
-      </Typography>
-      <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-        Enter customer information to assess churn risk and view probability statistics.
-      </Typography>
-      <Grid container spacing={4}>
-        <Grid item xs={12} md={6}>
-          <Paper elevation={3} sx={{ p: 4, maxWidth: 540, minHeight: 600, mx: 'auto', background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
-            <ChurnForm setResult={setResult} />
+      <Grid container spacing={4} justifyContent="center" alignItems="flex-start">
+        <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 600, background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
+            <Typography variant="h5" gutterBottom>
+              Churn Risk Classification
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 2, color: '#555' }}>
+              Enter customer information to assess churn risk and view probability statistics.
+            </Typography>
+            <ChurnForm setResult={setResult} setLoading={setLoading} />
           </Paper>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <ChurnResults result={result} />
+        <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500, background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
+            <ChurnResults result={result} loading={loading} />
+          </Paper>
         </Grid>
       </Grid>
     </Container>
