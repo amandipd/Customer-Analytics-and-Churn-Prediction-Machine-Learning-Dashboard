@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project simulates the creation of an internal tool for companies to gain actionable insights about their customers. The tool is designed to help businesses:
+This project is a completed internal tool for companies to gain actionable insights about their customers. The tool enables businesses to:
 
 - Predict how much a customer might spend
 - Segment customers into meaningful groups for targeted marketing
@@ -39,6 +39,33 @@ This feature predicts whether a customer is at risk of leaving (churning) and pr
   - Axios (HTTP requests)
   - joblib (model persistence)
   - CORS middleware (API access)
+
+---
+
+## Folder Structure
+
+```
+Customer-Analytics-and-Churn-Prediction-Machine-Learning-Dashboard/
+│
+├── backend/                # FastAPI backend and ML logic
+│   ├── api.py              # FastAPI API endpoints
+│   ├── main.py             # Data processing and ML pipeline
+│   ├── churn.py            # Churn prediction logic
+│   ├── segmentation.py     # Customer segmentation logic
+│   ├── e-com_customer_behavior.csv  # Synthetic dataset
+│   └── models/             # ML model classes (Random Forest, XGBoost, etc.)
+│
+├── frontend/               # React frontend
+│   ├── public/             # Static assets (index.html, icons, etc.)
+│   └── src/                # Source code
+│       ├── components/     # Reusable UI components (forms, navbar, results)
+│       ├── pages/          # Main app pages (ML, Segmentation, Churn, About)
+│       ├── App.js          # Main React app
+│       └── ...             # Other frontend files (theme, styles, etc.)
+│
+├── requirements.txt        # Python backend dependencies
+└── README.md               # Project documentation
+```
 
 ---
 
