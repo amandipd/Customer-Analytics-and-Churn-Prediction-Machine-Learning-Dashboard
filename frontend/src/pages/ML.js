@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Grid, Paper, Typography, Box, CircularProgress } from '@mui/material';
 import MLForm from '../components/MLForm';
 import axios from 'axios';
+import RenderDelayNote from '../components/RenderDelayNote';
 
 const ML = () => {
   const [result, setResult] = useState(null);
@@ -47,7 +48,7 @@ const ML = () => {
             <MLForm setResult={setResult} model={model} setModel={setModel} />
           </Paper>
         </Grid>
-        <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
           <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500, background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
             <Typography variant="h6" gutterBottom>
               Prediction Results
@@ -83,6 +84,7 @@ const ML = () => {
               )}
             </Box>
           </Paper>
+          <RenderDelayNote />
         </Grid>
       </Grid>
     </Container>

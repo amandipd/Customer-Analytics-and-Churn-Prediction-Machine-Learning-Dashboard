@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography, Paper, Divider } from '@mui/material';
+import RenderDelayNote from '../components/RenderDelayNote';
 
 const About = () => (
   <Box sx={{ maxWidth: 800, mx: 'auto', mt: 2, mb: 6 }}>

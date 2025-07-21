@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Grid, Paper, Typography, Box } from '@mui/material';
 import { TextField, Button, MenuItem, Alert, FormControlLabel, Checkbox, CircularProgress } from '@mui/material';
 import axios from 'axios';
+import RenderDelayNote from '../components/RenderDelayNote';
 
 const genders = ['Male', 'Female'];
 const membershipTypes = ['Bronze', 'Silver', 'Gold'];
@@ -242,21 +243,7 @@ const ChurnResults = ({ result, loading }) => {
     return <Box sx={{ mt: 3, textAlign: 'center' }}><CircularProgress /></Box>;
   }
   return (
-    <Paper elevation={2} sx={{ 
-      p: 3, 
-      mt: 2, 
-      background: 'rgba(255,255,255,0.24)',
-      color: '#222',
-      borderRadius: 3,
-      boxShadow: '0 2px 8px 0 rgba(44,80,184,0.07)',
-      textAlign: 'left',
-      minWidth: 220,
-      maxWidth: 400,
-      mx: 'auto'
-    }}>
-      <Typography variant="h6" gutterBottom>
-        Prediction Results
-      </Typography>
+    <>
       {!result ? (
         <Typography sx={{ color: '#555', mt: 2 }}>
           Results will appear here after you submit the form.
@@ -271,7 +258,7 @@ const ChurnResults = ({ result, loading }) => {
           </Typography>
         </>
       )}
-    </Paper>
+    </>
   );
 };
 
@@ -293,8 +280,16 @@ const Churn = () => {
             <ChurnForm setResult={setResult} setLoading={setLoading} />
           </Paper>
         </Grid>
-        <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <ChurnResults result={result} loading={loading} />
+        <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500, background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
+            <Typography variant="h6" gutterBottom>
+              Prediction Results
+            </Typography>
+            <Box sx={{ color: '#555' }}>
+              <ChurnResults result={result} loading={loading} />
+            </Box>
+          </Paper>
+          <RenderDelayNote />
         </Grid>
       </Grid>
     </Container>

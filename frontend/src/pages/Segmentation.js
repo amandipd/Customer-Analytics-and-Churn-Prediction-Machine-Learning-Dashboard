@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Grid, Paper, Typography, Box } from '@mui/material';
 import SegmentationForm from '../components/SegmentationForm';
 import SegmentationResults from '../components/SegmentationResults';
+import RenderDelayNote from '../components/RenderDelayNote';
 
 const Segmentation = () => {
   const [result, setResult] = useState(null);
@@ -33,7 +34,7 @@ const Segmentation = () => {
             <SegmentationForm setResult={handleSetResult} setStatus={setStatus} segmentationStatus={status} />
           </Paper>
         </Grid>
-        <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
           <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500, background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
             <Typography variant="h6" gutterBottom>
               Segmentation Results
@@ -42,6 +43,7 @@ const Segmentation = () => {
               <SegmentationResults result={result} status={status} />
             </Box>
           </Paper>
+          <RenderDelayNote />
         </Grid>
       </Grid>
     </Container>
