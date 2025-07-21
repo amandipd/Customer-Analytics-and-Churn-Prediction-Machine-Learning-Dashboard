@@ -45,7 +45,7 @@ class Segmentation:
         kmeans = KMeans(n_clusters=n_clusters, random_state=42)
         cluster_labels = kmeans.fit_predict(self.df[features])
 
-        # create copy of original dataframe with cluster assignments
+        # create copy 
         df_with_clusters = self.df.copy()
         df_with_clusters['Cluster'] = cluster_labels
 
@@ -167,16 +167,18 @@ class Segmentation:
         """
         Generate a boxplot of a selected feature grouped by cluster.
         """
-        # Run KMeans clustering
+        
         kmeans = KMeans(n_clusters=n_clusters, random_state=42)
         cluster_labels = kmeans.fit_predict(self.df[features])
         df_with_clusters = self.df.copy()
         df_with_clusters['Cluster'] = cluster_labels + 1  # 1-based for user
-        # Unstandardize if needed
+        
+
         if standardization_params is not None and feature_to_plot in standardization_params:
             std = standardization_params[feature_to_plot]["std"]
             mean = standardization_params[feature_to_plot]["mean"]
             df_with_clusters[feature_to_plot] = df_with_clusters[feature_to_plot] * std + mean
+        
         # Create boxplot
         buf = io.BytesIO()
         plt.figure(figsize=(8, 5))

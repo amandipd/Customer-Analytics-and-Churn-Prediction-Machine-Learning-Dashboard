@@ -77,17 +77,6 @@ const Navbar = () => {
             );
           })}
         </Paper>
-        <Box sx={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', height: '100%' }}>
-          <IconButton
-            href="https://github.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            sx={{ color: '#222', '&:hover': { color: '#2c50b8', background: 'rgba(44,80,184,0.07)' } }}
-            aria-label="GitHub Repository"
-          >
-            <GitHubIcon fontSize="medium" />
-          </IconButton>
-        </Box>
       </Toolbar>
     </AppBar>
   );

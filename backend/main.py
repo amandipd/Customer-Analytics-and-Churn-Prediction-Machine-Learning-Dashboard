@@ -132,17 +132,16 @@ class Main:
     def predict_user_input(self, model, user_data_dict, feature_columns):
         user_df = pd.DataFrame([user_data_dict])
 
-        # Applying one-hot encoding
+   
         user_df = pd.get_dummies(user_df)
 
-        # Ensuring all columns are present
+       
         for col in feature_columns:
             if col not in user_df.columns:
                 user_df[col] = 0
 
-        # reorder columns to match training data
+        
         user_df = user_df[feature_columns]
-
         prediction = model.predict(user_df)[0]
         return prediction
 
@@ -160,12 +159,10 @@ def preprocess_user_input(user_input: dict, feature_columns: list) -> pd.DataFra
     user_input = {rename_map.get(k, k): v for k, v in user_input.items()}
     df = pd.DataFrame([user_input])
 
-    # One-hot encode categorical columns
     for col in ['Gender', 'City', 'Membership Type', 'Satisfaction Level']:
         if col in df.columns:
             df = pd.get_dummies(df, columns=[col])
 
-    # Add missing columns (from training) as zeros
     for col in feature_columns:
         if col not in df.columns:
             df[col] = 0
@@ -179,21 +176,18 @@ def preprocess_user_input(user_input: dict, feature_columns: list) -> pd.DataFra
 
 def test_all_models(df):
     print("\n==================== TESTING ALL MODELS ====================\n")
-    # Linear Regression
     print("1. LINEAR REGRESSION MODEL:")
     lin_reg_test = Linear_Regression(df)
     lin_reg_test.linear_regression()
     lin_reg_test.evaluate_model()
     print("\n" + "-"*60 + "\n")
 
-    # Random Forest
     print("2. RANDOM FOREST REGRESSOR:")
     rf_test = Random_Forest(df)
     rf_test.random_forest_regressor()
     rf_test.evaluate_model()
     print("\n" + "-"*60 + "\n")
 
-    # XGBoost
     print("3. XGBOOST REGRESSION MODEL:")
     xgb = XGBoost_Regression(df)
     xgb.xgboost_regression()
@@ -202,13 +196,10 @@ def test_all_models(df):
 
 
 if __name__ == "__main__":
-    # Initialize the main class
+    
     main = Main()
-
-    # Get the processed dataframe
     df = main.df
 
-    # Churn Tests
     print("\n==================== CHURN TESTS ====================\n")
     churn = Churn(df)
     print(f"Churn model accuracy on test set: {churn.accuracy:.2%}")
@@ -221,26 +212,22 @@ if __name__ == "__main__":
     print(f"Predicted churn risk (1=risk, 0=no risk): {risk}")
     print("\n==================== END CHURN TESTS ====================\n")
 
-    # Linear Regression Tests
+
     '''
     lin_reg_test = Linear_Regression(df)
     lin_reg_test.linear_regression()
     lin_reg_test.evaluate_model()
     '''
 
-    # Random Forest Tests
+
     '''
     rf_test = Random_Forest(df)
     rf_test.random_forest_regressor()
     rf_test.evaluate_model()
     '''
 
-    # XGBoost Tests
     '''
     xgb = XGBoost_Regression(df)
     xgb.xgboost_regression()
     xgb.evaluate_model()
     '''
-
-    # Test all models
-    # test_all_models(df)

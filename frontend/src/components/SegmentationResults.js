@@ -39,8 +39,16 @@ const SegmentationResults = ({ result, status }) => {
   if (status === 'loading') {
     return (
       <Box sx={{ mt: 4 }}>
-        <Paper elevation={3} sx={{ p: 4 }}>
-          <Typography variant="h6" color="primary">
+        <Paper elevation={3} sx={{ 
+          p: 4, 
+          background: 'rgba(255,255,255,0.24)',
+          color: '#222',
+          borderRadius: 4,
+          textAlign: 'center',
+          maxWidth: 400,
+          mx: 'auto'
+        }}>
+          <Typography variant="h6" sx={{ color: '#222' }}>
             Loading...
           </Typography>
         </Paper>

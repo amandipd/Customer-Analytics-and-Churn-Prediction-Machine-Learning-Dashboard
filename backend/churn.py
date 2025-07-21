@@ -7,14 +7,13 @@ from sklearn.metrics import accuracy_score
 class Churn:
     def __init__(self, df):
         self.df = df.copy()
-        # Add churn_risk column: 1 if Days Since Last Purchase > 45, else 0
         self.df['churn_risk'] = (
             self.df['Days Since Last Purchase'] > 45).astype(int)
 
         X = self.df.drop(
             columns=["Customer ID", "churn_risk"], errors='ignore')
         y = self.df['churn_risk']
-        # Split data
+
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
             X, y, test_size=0.2, random_state=42)
 

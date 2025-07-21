@@ -7,6 +7,7 @@ from backend.models.linear_regression import Linear_Regression
 from backend.models.random_forest import Random_Forest
 from backend.models.xgboost import XGBoost_Regression
 import requests
+import os
 from fastapi import Body
 from backend.segmentation import Segmentation
 from backend.churn import Churn
@@ -106,7 +107,6 @@ def get_segmentation_features():
     # Get features excluding Customer ID and Total Spend
     features = main_instance.get_features_without_spend()
 
-    # Create feature options with labels
     feature_options = []
     for feature in features:
         if feature in ['Age', 'Items Purchased', 'Average Rating', 'Discount Applied', 'Days Since Last Purchase']:
@@ -158,7 +158,6 @@ def kmeans_segmentation(input: KMeansInput):
     df_clusters = seg.k_means_cluster(
         input.features, n_clusters=input.n_clusters, plot=False)
 
-    # Prepare cluster statistics
     clusters = df_clusters['Cluster'].unique()
     stats = {}
     for cluster in clusters:
@@ -176,6 +175,7 @@ def kmeans_segmentation(input: KMeansInput):
         for stat_name, col_name in numeric_features:
             if col_name in cluster_df.columns:
                 value = cluster_df[col_name].mean()
+
                 # unstandardize columns before returning to frontend
                 if col_name in ["Age", "Items Purchased", "Average Rating", "Days Since Last Purchase"]:
                     std = main_instance.standardization_params[col_name]["std"]
@@ -200,7 +200,6 @@ def kmeans_segmentation(input: KMeansInput):
             'membership_type_distribution': membership_dist,
             'satisfaction_level_distribution': satisfaction_dist
         }
-    # Remove assignments output, only return stats
     return {"stats": stats}
 
 
@@ -231,6 +230,7 @@ def dbscan_segmentation(input: DBSCANInput):
         ]
         numeric_averages = {}
         for stat_name, col_name in numeric_features:
+
             # unstandardize data before sending to frontend
             if col_name in cluster_df.columns:
                 value = cluster_df[col_name].mean()
@@ -257,7 +257,6 @@ def dbscan_segmentation(input: DBSCANInput):
             'membership_type_distribution': membership_dist,
             'satisfaction_level_distribution': satisfaction_dist
         }
-    # Remove assignments output, only return stats for DBSCAN
     return {"stats": stats}
 
 
@@ -276,26 +275,19 @@ class ChurnInput(BaseModel):
 
 @app.post("/predict/churn")
 def predict_churn(input: ChurnInput):
-    # Create raw DataFrame for churn (without standardization)
-    import os
     csv_path = os.path.join(os.path.dirname(__file__),
                             'e-com_customer_behavior.csv')
     raw_df = pd.read_csv(csv_path)
 
-    # Impute missing values and convert booleans (same as main.py)
     most_common = raw_df["Satisfaction Level"].mode()[0]
     raw_df["Satisfaction Level"] = raw_df["Satisfaction Level"].fillna(
         most_common)
     raw_df["Discount Applied"] = raw_df["Discount Applied"].astype(int)
 
-    # One-hot encode categorical columns (but don't standardize)
     raw_df = pd.get_dummies(
         raw_df, columns=['Gender', 'City', 'Membership Type', 'Satisfaction Level'])
-
-    # Use raw DataFrame for churn model
     churn_model = Churn(raw_df)
 
-    # Convert input to match the raw DataFrame format
     input_dict = input.model_dump()
     input_dict["Total Spend"] = input_dict.pop("Total_Spend")
     input_dict["Items Purchased"] = input_dict.pop("Items_Purchased")
@@ -304,17 +296,16 @@ def predict_churn(input: ChurnInput):
     input_dict["Days Since Last Purchase"] = input_dict.pop(
         "Days_Since_Last_Purchase")
 
-    # Preprocess input to match the model's expected format
     input_df = preprocess_user_input(input_dict, churn_model.df.drop(
         columns=["Customer ID", "churn_risk"]).columns)
 
     risk = int(churn_model.model.predict(input_df)[0])
     proba_array = churn_model.model.predict_proba(input_df)[0]
-    # Handle case where model only predicts one class
+
     if len(proba_array) == 1:
         proba = float(proba_array[0])
     else:
-        proba = float(proba_array[1])  # Probability of class 1 (churn risk)
+        proba = float(proba_array[1])
     return {
         "churn_risk": risk,
         "probability": proba,

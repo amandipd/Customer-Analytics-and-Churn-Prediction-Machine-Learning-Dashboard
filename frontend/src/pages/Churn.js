@@ -242,28 +242,36 @@ const ChurnResults = ({ result, loading }) => {
     return <Box sx={{ mt: 3, textAlign: 'center' }}><CircularProgress /></Box>;
   }
   return (
-    <Box>
+    <Paper elevation={2} sx={{ 
+      p: 3, 
+      mt: 2, 
+      background: 'rgba(255,255,255,0.24)',
+      color: '#222',
+      borderRadius: 3,
+      boxShadow: '0 2px 8px 0 rgba(44,80,184,0.07)',
+      textAlign: 'left',
+      minWidth: 220,
+      maxWidth: 400,
+      mx: 'auto'
+    }}>
       <Typography variant="h6" gutterBottom>
         Prediction Results
       </Typography>
       {!result ? (
-  <Typography sx={{ color: '#555', mt: 2 }}>
-    Results will appear here after you submit the form.
-  </Typography>
-) : (
-  <Paper elevation={2} sx={{ p: 3, mt: 2 }}>
-    <Typography variant="body1" sx={{ mb: 2 }}>
-      <strong>Churn Risk:</strong> {result.churn_risk === 1 ? 'At Risk' : 'Not at Risk'}
-    </Typography>
-    <Typography variant="body2">
-      <strong>Risk of Losing Customer:</strong> {(result.probability * 100).toFixed(2)}%
-    </Typography>
-    <Typography variant="body2">
-      <strong>Model Accuracy:</strong> {(result.model_accuracy * 100).toFixed(2)}%
-    </Typography>
-  </Paper>
-) }
-    </Box>
+        <Typography sx={{ color: '#555', mt: 2 }}>
+          Results will appear here after you submit the form.
+        </Typography>
+      ) : (
+        <>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1, color: '#222' }}>
+            Churn Risk: <span style={{ fontWeight: 400 }}>{result.churn_risk === 1 ? 'At Risk' : 'Not at Risk'}</span>
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 0.5, color: '#222' }}>
+            <b>Risk of Losing Customer:</b> {(result.probability * 100).toFixed(2)}%
+          </Typography>
+        </>
+      )}
+    </Paper>
   );
 };
 
@@ -286,9 +294,7 @@ const Churn = () => {
           </Paper>
         </Grid>
         <Grid item xs={12} md={6} lg={5} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 500, background: 'rgba(255,255,255,0.24)', color: '#111', borderRadius: 4 }}>
-            <ChurnResults result={result} loading={loading} />
-          </Paper>
+          <ChurnResults result={result} loading={loading} />
         </Grid>
       </Grid>
     </Container>

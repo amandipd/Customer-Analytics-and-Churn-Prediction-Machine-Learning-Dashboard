@@ -14,6 +14,7 @@ import {
   Checkbox,
   ListItemText,
   CircularProgress,
+  Paper,
 } from "@mui/material";
 
 const algorithmOptions = [
@@ -115,7 +116,7 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
     } else {
       setBoxplotImg(null);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  
   }, [
     segmentationStatus,
     algorithm,
@@ -192,19 +193,19 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
               color: "rgba(0, 0, 0, 0.87)",
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  borderColor: "rgba(0, 0, 0, 0.42)",
-                  borderWidth: "1px",
+                  borderColor: "#b0b0b0",
+                  borderWidth: "1.5px",
                 },
                 "& input": {
                   fontSize: "0.95rem",
                   color: "#222",
                 },
                 "&:hover fieldset": {
-                  borderColor: "rgba(0, 0, 0, 0.87)",
-                  borderWidth: "1px",
+                  borderColor: "#b0b0b0",
+                  borderWidth: "1.5px",
                 },
                 "&.Mui-focused fieldset": {
-                  borderColor: "rgba(25, 118, 210, 0.87)",
+                  borderColor: "#b0b0b0",
                   borderWidth: "2px",
                 },
               },
@@ -456,25 +457,61 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
-                    borderColor: "#e0e0e0",
+                    borderColor: "#b0b0b0",
+                    borderWidth: "1.5px",
                   },
                   "& input": {
                     fontSize: "0.95rem",
                     color: "#222",
                   },
+                  "&.Mui-disabled": {
+                    backgroundColor: "#f5f7fa",
+                    color: "#222",
+                    opacity: 1,
+                  },
+                  "& .MuiSelect-select": {
+                    color: "#222 !important",
+                  },
                   "&:hover fieldset": {
-                    borderColor: "#e0e0e0",
+                    borderColor: "#b0b0b0",
+                    borderWidth: "1.5px",
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: "#e0e0e0",
+                    borderColor: "#b0b0b0",
+                    borderWidth: "2px",
                   },
                 },
                 "& .MuiInputLabel-root": {
                   fontSize: "0.95rem",
                   color: "#222",
                 },
+                color: '#222',
               }}
               InputLabelProps={{ style: { color: "#222", opacity: 1 } }}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    backgroundColor: '#fff',
+                    color: '#222',
+                  },
+                },
+                MenuListProps: {
+                  sx: {
+                    '& .MuiMenuItem-root': {
+                      backgroundColor: '#fff',
+                      color: '#222',
+                      '&:hover': {
+                        backgroundColor: '#f5f5f5',
+                        color: '#222',
+                      },
+                      '&.Mui-selected': {
+                        backgroundColor: '#e0e0e0',
+                        color: '#222',
+                      },
+                    },
+                  },
+                },
+              }}
             >
               {selectedFeatures
                 .filter((value) => {
@@ -494,6 +531,11 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
                   );
                 })}
             </Select>
+            <Box sx={{ mt: 1, mb: 2 }}>
+              <span style={{ color: '#555', fontSize: '0.93rem' }}>
+                Tip: For best results, select a <b>numeric feature</b> with a wide range of values (e.g., <b>Age</b>, <b>Items Purchased</b>, <b>Days Since Last Purchase</b>). Categorical or binary features may produce less informative boxplots.
+              </span>
+            </Box>
           </FormControl>
         )}
 
@@ -521,7 +563,20 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
         selectedFeatures.length > 0 &&
         boxplotFeature && (
           <Box sx={{ mt: 3 }}>
-            {boxplotLoading && <Typography>Loading boxplot...</Typography>}
+            {boxplotLoading && (
+              <Paper elevation={2} sx={{
+                p: 2,
+                background: 'rgba(255,255,255,0.24)',
+                color: '#222',
+                borderRadius: 3,
+                textAlign: 'center',
+                maxWidth: 320,
+                mx: 'auto',
+                mb: 2
+              }}>
+                Loading boxplot...
+              </Paper>
+            )}
             {boxplotError && (
               <Typography color="error" sx={{ mt: 2 }}>
                 {boxplotError}
