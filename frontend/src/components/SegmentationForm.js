@@ -59,7 +59,7 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
     const loadFeatures = async () => {
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8000/segmentation/features"
+          "https://customer-analytics-and-churn-prediction-t7i4.onrender.com/segmentation/features"
         );
         setAvailableFeatures(response.data.features);
       } catch (error) {
@@ -105,7 +105,7 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
       setBoxplotError(null);
       setBoxplotImg(null);
       axios
-        .post("http://127.0.0.1:8000/segmentation/boxplot", {
+        .post("https://customer-analytics-and-churn-prediction-t7i4.onrender.com/segmentation/boxplot", {
           features: selectedFeatures,
           n_clusters: nClusters,
           feature_to_plot: boxplotFeature,
@@ -153,7 +153,7 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
           ? { features: selectedFeatures, n_clusters: nClusters }
           : { features: selectedFeatures, eps: eps, min_samples: minSamples };
 
-      const res = await axios.post(`http://127.0.0.1:8000${endpoint}`, payload);
+      const res = await axios.post(`https://customer-analytics-and-churn-prediction-t7i4.onrender.com${endpoint}`, payload);
       setResult({
         assignments: res.data.assignments,
         stats: res.data.stats,

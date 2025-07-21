@@ -50,12 +50,12 @@ const MLForm = ({ setResult, model, setModel }) => {
     setModel(localModel);
     try {
       const res = await axios.post(
-        `http://127.0.0.1:8000/predict/${localModel}`,
+        `https://customer-analytics-and-churn-prediction-t7i4.onrender.com/predict/${localModel}`,
         input
       );
       let stats = null;
       try {
-        const statsRes = await axios.get(`http://127.0.0.1:8000/model-stats/${localModel}`);
+        const statsRes = await axios.get(`https://customer-analytics-and-churn-prediction-t7i4.onrender.com/model-stats/${localModel}`);
         stats = statsRes.data;
       } catch (statsErr) {
         stats = { error: 'Could not fetch model statistics.' };

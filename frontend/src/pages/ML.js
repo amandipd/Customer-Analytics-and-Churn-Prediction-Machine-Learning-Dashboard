@@ -19,7 +19,7 @@ const ML = () => {
         setResidualPlot(null);
         try {
           let apiModel = model.replace('-', '_');
-          const res = await axios.post('http://127.0.0.1:8000/residual-plot', { model: apiModel });
+          const res = await axios.post('https://customer-analytics-and-churn-prediction-t7i4.onrender.com/residual-plot', { model: apiModel });
           setResidualPlot(res.data.image_base64);
         } catch (err) {
           setPlotError('Could not fetch residual plot.');

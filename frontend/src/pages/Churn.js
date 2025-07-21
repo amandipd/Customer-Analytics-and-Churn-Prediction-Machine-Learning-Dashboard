@@ -56,7 +56,7 @@ const ChurnForm = ({ setResult, setLoading }) => {
         Membership_Type: input.Membership_Type,
         Satisfaction_Level: input.Satisfaction_Level
       };
-      const res = await axios.post('http://127.0.0.1:8000/predict/churn', payload);
+      const res = await axios.post('https://customer-analytics-and-churn-prediction-t7i4.onrender.com/predict/churn', payload);
       setResult(res.data);
     } catch (err) {
       setError(err.response?.data?.detail || 'Prediction failed.');
