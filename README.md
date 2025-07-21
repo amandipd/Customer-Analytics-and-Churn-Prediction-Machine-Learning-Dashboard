@@ -1,4 +1,6 @@
 # Customer Analytics & Churn Prediction Machine Learning Dashboard
+## Project Website: [Website](https://customer-analytics-and-churn-predic.vercel.app/about)
+<img width="1264" height="951" alt="image" src="https://github.com/user-attachments/assets/cfbf3e46-9ac4-46a3-9b62-3615f493c2b9" />
 
 ## Overview
 
