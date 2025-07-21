@@ -214,6 +214,30 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
               },
             }}
             InputLabelProps={{ style: { color: "#222", opacity: 1 } }}
+            MenuProps={{
+              PaperProps: {
+                sx: {
+                  backgroundColor: '#232323',
+                  color: '#fff',
+                },
+              },
+              MenuListProps: {
+                sx: {
+                  '& .MuiMenuItem-root': {
+                    backgroundColor: '#232323',
+                    color: '#fff',
+                    '&:hover': {
+                      backgroundColor: '#333',
+                      color: '#fff',
+                    },
+                    '&.Mui-selected': {
+                      backgroundColor: '#333',
+                      color: '#fff',
+                    },
+                  },
+                },
+              },
+            }}
           >
             {algorithmOptions.map((opt) => (
               <MenuItem
@@ -237,7 +261,17 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
             onChange={handleFeatureChange}
             input={<OutlinedInput label="Features for Clustering" />}
             renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+              <Box sx={{ 
+                display: "flex", 
+                flexWrap: "wrap", 
+                gap: 0.5,
+                border: '1.5px solid rgba(60,80,180,0.18)',
+                borderRadius: 2,
+                p: 1.2,
+                backgroundColor: 'rgba(255,255,255,0.24)',
+                boxShadow: '0 2px 8px 0 rgba(44,80,184,0.07)',
+                minHeight: 48
+              }}>
                 {selected.map((value) => {
                   const feature = availableFeatures.find(
                     (f) => f.value === value
@@ -247,6 +281,18 @@ const SegmentationForm = ({ setResult, setStatus, segmentationStatus }) => {
                       key={value}
                       label={feature?.label || value}
                       size="small"
+                      sx={{
+                        color: '#222',
+                        backgroundColor: 'rgba(255,255,255,0.85)',
+                        borderRadius: 2,
+                        fontWeight: 500,
+                        fontSize: '0.97rem',
+                        boxShadow: '0 1px 4px 0 rgba(44,80,184,0.07)',
+                        mr: 0.5,
+                        mb: 0.5,
+                        border: '1px solid #e0e0e0',
+                        letterSpacing: 0.1,
+                      }}
                     />
                   );
                 })}
