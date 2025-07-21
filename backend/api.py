@@ -1,16 +1,16 @@
 from fastapi import FastAPI
-from backend.main import Main, preprocess_user_input
+from main import Main, preprocess_user_input
 from pydantic import BaseModel
 from fastapi import Query
 import pandas as pd
-from backend.models.linear_regression import Linear_Regression
-from backend.models.random_forest import Random_Forest
-from backend.models.xgboost import XGBoost_Regression
+from models.linear_regression import Linear_Regression
+from models.random_forest import Random_Forest
+from models.xgboost import XGBoost_Regression
 import requests
 import os
 from fastapi import Body
-from backend.segmentation import Segmentation
-from backend.churn import Churn
+from segmentation import Segmentation
+from churn import Churn
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import HTTPException
 

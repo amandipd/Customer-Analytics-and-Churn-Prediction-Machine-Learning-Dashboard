@@ -5,12 +5,12 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
 from xgboost import XGBRegressor
-from backend.models.linear_regression import Linear_Regression
-from backend.models.random_forest import Random_Forest
-from backend.models.xgboost import XGBoost_Regression
+from models.linear_regression import Linear_Regression
+from models.random_forest import Random_Forest
+from models.xgboost import XGBoost_Regression
 import joblib
 import os
-from backend.churn import Churn
+from churn import Churn
 
 # ---------------------- Data Cleaning ---------------------- #
 
@@ -132,15 +132,12 @@ class Main:
     def predict_user_input(self, model, user_data_dict, feature_columns):
         user_df = pd.DataFrame([user_data_dict])
 
-   
         user_df = pd.get_dummies(user_df)
 
-       
         for col in feature_columns:
             if col not in user_df.columns:
                 user_df[col] = 0
 
-        
         user_df = user_df[feature_columns]
         prediction = model.predict(user_df)[0]
         return prediction
@@ -196,7 +193,7 @@ def test_all_models(df):
 
 
 if __name__ == "__main__":
-    
+
     main = Main()
     df = main.df
 
@@ -212,13 +209,11 @@ if __name__ == "__main__":
     print(f"Predicted churn risk (1=risk, 0=no risk): {risk}")
     print("\n==================== END CHURN TESTS ====================\n")
 
-
     '''
     lin_reg_test = Linear_Regression(df)
     lin_reg_test.linear_regression()
     lin_reg_test.evaluate_model()
     '''
-
 
     '''
     rf_test = Random_Forest(df)
